@@ -59,6 +59,9 @@ namespace SampleLibraryUI.Examples
         #region private members
 
         private double sliderValue;
+        private double sliderCustom;
+
+        private int countValue;
 
         #endregion
 
@@ -75,6 +78,30 @@ namespace SampleLibraryUI.Examples
             {
                 sliderValue = value;
                 RaisePropertyChanged("SliderValue");
+
+                OnNodeModified();
+            }
+        }
+
+        public double SliderCustom
+        {
+            get { return sliderCustom; }
+            set
+            {
+                sliderCustom = value;
+                RaisePropertyChanged("SliderCustom");
+
+                OnNodeModified();
+            }
+        }
+
+        public double CountValue
+        {
+            get { return countValue; }
+            set
+            {
+                countValue = (int)value;
+                RaisePropertyChanged("CountValue");
 
                 OnNodeModified();
             }
@@ -99,8 +126,10 @@ namespace SampleLibraryUI.Examples
 
             // Nodes can have an arbitrary number of inputs and outputs.
             // If you want more ports, just create more PortData objects.
-            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("upper value", "returns a 0-10 double value")));
-            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("lower value", "returns a 0-100 double value")));
+            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("List<values>", "returns a 0-100 double value")));
+            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("max value", "returns a 0-100 double value")));
+            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("min value", "returns a 0-100 double value")));
+
 
             // This call is required to ensure that your ports are
             // properly created.
@@ -113,6 +142,9 @@ namespace SampleLibraryUI.Examples
 
             // Set initial slider value.
             sliderValue = 4;
+
+            //set initial count value;
+            countValue = 3;
         }
 
         // Starting with Dynamo v2.0 you must add Json constructors for all nodeModel
@@ -208,12 +240,15 @@ namespace SampleLibraryUI.Examples
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
             var sliderControl = new SliderControl();
+            var sliderControl2 = new SliderControl();
             nodeView.inputGrid.Children.Add(sliderControl);
+            nodeView.inputGrid.Children.Add(sliderControl2);
 
             // Set the data context for our control to be the node model.
             // Properties in this class which are data bound will raise 
             // property change notifications which will update the UI.
             sliderControl.DataContext = model;
+            sliderControl2.DataContext = model;
         }
 
         /// <summary>

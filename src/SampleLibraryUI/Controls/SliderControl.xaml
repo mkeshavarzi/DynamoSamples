@@ -3,26 +3,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             Height="65" Width="210">
+             mc:Ignorable="d"
+             Height="232.943" Width="208.572">
     <Grid Name="CustomUIGrid">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="7,0,0,0" Text="0" FontFamily="Arial" Foreground="#FF5E5C5A"/>
-                <TextBlock Margin="169,0,0,0" Text="10" FontFamily="Arial" Foreground="#FF5E5C5A"/>
+        <StackPanel Margin="0,0,-3.2,-66.2">
+            <StackPanel x:Name="countStackPanel"  Orientation="Horizontal">
+                <TextBlock x:Name="countTextBlock" Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="48"><Run Text="Count"/>
+                    <InlineUIContainer>
+                    <StackPanel Height="100" Width="50"/>
+                </InlineUIContainer>
+                </TextBlock>
+                <TextBox x:Name="countTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="2" Width="142" TextChanged="CountValueChanged"/>
             </StackPanel>
-            <Slider Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
-                <Slider.Background>
-                    <ImageBrush/>
-                </Slider.Background>
-                <Slider.ToolTip>
-                    <TextBlock Text="Slide this to crank up the awesome."></TextBlock>
-                </Slider.ToolTip>
-            </Slider>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                <TextBlock Margin="7,0,0,0" Text="0" FontFamily="Arial" Foreground="#FF5E5C5A"/>
-                <TextBlock Margin="165,0,0,0" Text="100" HorizontalAlignment="Right" FontFamily="Arial" Foreground="#FF5E5C5A"/>
+            <StackPanel  Orientation="Horizontal">
+                <TextBlock x:Name="minTextBlock" Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="48" Text="Min"/>
+                <TextBox x:Name="minTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" Width="142"/>
+            </StackPanel>
+            <StackPanel  Orientation="Horizontal">
+                <TextBlock x:Name="maxTextBlock" Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="48"><Run Text="Max"/><InlineUIContainer>
+                        <StackPanel Height="100" Width="50"/>
+                    </InlineUIContainer></TextBlock>
+                <TextBox x:Name="maxTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="100" Width="142"/>
+            </StackPanel>
+            <StackPanel  Orientation="Horizontal">
+                <TextBlock Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="48"><Run Text="Step"/><InlineUIContainer>
+                        <StackPanel Height="100" Width="50"/>
+                    </InlineUIContainer></TextBlock>
+                <TextBox HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="1" Width="142"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"/>
+            <StackPanel x:Name="SliderStackPanel">
+                <Slider Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
+                    <Slider.Background>
+                        <ImageBrush/>
+                    </Slider.Background>
+                    <Slider.ToolTip>
+                        <TextBlock Text="Slide this to crank up the awesome."></TextBlock>
+                    </Slider.ToolTip>
+                </Slider>
+                <Slider x:Name="Slider1" Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderCustom, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueCustom" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
+                    <Slider.Background>
+                        <ImageBrush/>
+                    </Slider.Background>
+                    <Slider.ToolTip>
+                        <TextBlock Text="Slide this to crank up the awesome."></TextBlock>
+                    </Slider.ToolTip>
+                </Slider>
+                <Slider Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
+                    <Slider.Background>
+                        <ImageBrush/>
+                    </Slider.Background>
+                    <Slider.ToolTip>
+                        <TextBlock Text="Slide this to crank up the awesome."></TextBlock>
+                    </Slider.ToolTip>
+                </Slider>
+
+            </StackPanel>
+            <StackPanel x:Name="SliderStackPanel_Copy">
+                <Slider x:Name="cloneSlider" Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
+                    <Slider.Background>
+                        <ImageBrush/>
+                    </Slider.Background>
+                    <Slider.ToolTip>
+                        <TextBlock Text="Slide this to crank up the awesome."/>
+                    </Slider.ToolTip>
+                </Slider>
+                <TextBlock x:Name="debug" Height="14" Margin="7,0,157,0" TextWrapping="Wrap"><Run Text="Step"/><InlineUIContainer>
+                        <StackPanel Height="100" Width="50"/>
+                    </InlineUIContainer></TextBlock>
+
             </StackPanel>
         </StackPanel>
     </Grid>

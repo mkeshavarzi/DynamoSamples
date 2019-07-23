@@ -12,6 +12,7 @@ using SampleLibraryUI.Properties;
 using SampleLibraryZeroTouch;
 using Newtonsoft.Json;
 
+
 namespace SampleLibraryUI.Examples
 {
      /*
@@ -60,6 +61,12 @@ namespace SampleLibraryUI.Examples
 
         private double sliderValue;
         private double sliderCustom;
+        public static List<double> sliderValueList = new List<double>();
+        public static double sliderMoved = 10;
+
+        int countTest = 7;
+
+
 
         private int countValue;
 
@@ -77,12 +84,59 @@ namespace SampleLibraryUI.Examples
             set
             {
                 sliderValue = value;
-                RaisePropertyChanged("SliderValue");
+  //              RaisePropertyChanged("SliderValue");
+                OnNodeModified();
+            }
+        }
+
+        /// <summary>
+        /// A value that will be bound to our
+        /// custom UI's slider.
+        /// </summary>
+        public double SliderMoved
+        {
+            get { return sliderMoved; }
+            set
+            {
+                sliderMoved = value;
+                RaisePropertyChanged("SliderMoved");
+
 
                 OnNodeModified();
             }
         }
 
+        /// <summary>
+        /// A value that will be bound to our
+        /// custom UI's slider.
+        /// </summary>
+        public List<double> SliderValueList
+        {
+            get { return sliderValueList; }
+            set
+            {
+
+                countTest++;
+               if (SliderControl.valueList != null)
+                {
+                    foreach (double doub in SliderControl.valueList)
+                    {
+                        sliderValueList.Add(doub);
+                    }
+                    
+                }
+                RaisePropertyChanged("SliderValue");
+                OnNodeModified();
+            }
+        }
+
+
+        
+
+        /// <summary>
+        /// A value that will be bound to our
+        /// custom UI's slider.
+        /// </summary>
         public double SliderCustom
         {
             get { return sliderCustom; }
@@ -95,7 +149,7 @@ namespace SampleLibraryUI.Examples
             }
         }
 
-        public double CountValue
+        public int CountValue
         {
             get { return countValue; }
             set
@@ -126,9 +180,9 @@ namespace SampleLibraryUI.Examples
 
             // Nodes can have an arbitrary number of inputs and outputs.
             // If you want more ports, just create more PortData objects.
-            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("List<values>", "returns a 0-100 double value")));
-            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("max value", "returns a 0-100 double value")));
-            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("min value", "returns a 0-100 double value")));
+            OutPorts.Add(new PortModel(PortType.Output, this, new PortData(">", "List<Double>")));
+//            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("max value", "returns a 0-100 double value")));
+//            OutPorts.Add(new PortModel(PortType.Output, this, new PortData("min value", "returns a 0-100 double value")));
 
 
             // This call is required to ensure that your ports are
@@ -141,7 +195,7 @@ namespace SampleLibraryUI.Examples
             ArgumentLacing = LacingStrategy.Disabled;
 
             // Set initial slider value.
-            sliderValue = 4;
+            sliderValue = 5555;
 
             //set initial count value;
             countValue = 3;
@@ -181,7 +235,31 @@ namespace SampleLibraryUI.Examples
             // We create a DoubleNode to wrap the value 'sliderValue' that
             // we've stored in a private member.
 
+            var testNode  = AstFactory.BuildDoubleNode(232344);
+            var testNode2 = AstFactory.BuildDoubleNode(3423432);
+
+
+            List<AssociativeNode> assoListTest = new List<AssociativeNode>();
+
+            assoListTest.Add(testNode);
+            assoListTest.Add(testNode2);
+
+            var testList = AstFactory.BuildExprList(assoListTest);
+
+
+            List<AssociativeNode> sliderValueAssoList = new List<AssociativeNode>();
+            foreach (double value in sliderValueList)
+            {
+                var member = AstFactory.BuildDoubleNode(value);
+                sliderValueAssoList.Add(member);
+
+            }
+
+            var sliderValueListAST = AstFactory.BuildExprList(sliderValueAssoList);
+
             var doubleNode = AstFactory.BuildDoubleNode(sliderValue);
+
+
 
             // A FunctionCallNode can be used to represent the calling of a 
             // function in the AST. The method specified here must live in 
@@ -202,14 +280,17 @@ namespace SampleLibraryUI.Examples
                 // and 'assigns' that variable the expression that you create.
 
                 // For the first node, we'll just pass through the 
-                // input provided to this node.
-                AstFactory.BuildAssignment(
-                    GetAstIdentifierForOutputIndex(0), AstFactory.BuildDoubleNode(sliderValue)),
+                //input provided to this node.
+                AstFactory.BuildAssignment(GetAstIdentifierForOutputIndex(1), sliderValueListAST),
+
+
+//                AstFactory.BuildAssignment(GetAstIdentifierForOutputIndex(1), AstFactory.BuildDoubleNode(sliderValue)),
 
                 // For the second node, we'll build a double node that 
                 // passes along our value for multipled value.
-                AstFactory.BuildAssignment(
-                    GetAstIdentifierForOutputIndex(1), funcNode)
+
+
+ //               AstFactory.BuildAssignment(GetAstIdentifierForOutputIndex(1), funcNode)
             };
         }
 

@@ -26,10 +26,10 @@
                 <TextBox x:Name="maxTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="100" Width="142"/>
             </StackPanel>
             <StackPanel  Orientation="Horizontal">
-                <TextBlock Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="48"><Run Text="Step"/><InlineUIContainer>
+                <TextBlock x:Name="stepTextBlock" Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="48"><Run Text="Step"/><InlineUIContainer>
                         <StackPanel Height="100" Width="50"/>
                     </InlineUIContainer></TextBlock>
-                <TextBox HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="1" Width="142"/>
+                <TextBox x:Name="stepTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="1" Width="142"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"/>
             <StackPanel x:Name="SliderStackPanel">
@@ -60,7 +60,8 @@
 
             </StackPanel>
             <StackPanel x:Name="SliderStackPanel_Copy">
-                <Slider x:Name="cloneSlider" Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
+                <TextBlock x:Name="debug" Height="14" Margin="7,0,157,0" TextWrapping="Wrap" Text=" "/>
+                <Slider x:Name="sliderDebug" Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="None" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">
                     <Slider.Background>
                         <ImageBrush/>
                     </Slider.Background>
@@ -68,9 +69,6 @@
                         <TextBlock Text="Slide this to crank up the awesome."/>
                     </Slider.ToolTip>
                 </Slider>
-                <TextBlock x:Name="debug" Height="14" Margin="7,0,157,0" TextWrapping="Wrap"><Run Text="Step"/><InlineUIContainer>
-                        <StackPanel Height="100" Width="50"/>
-                    </InlineUIContainer></TextBlock>
 
             </StackPanel>
         </StackPanel>

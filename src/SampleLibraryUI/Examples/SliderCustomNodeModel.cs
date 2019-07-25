@@ -11,28 +11,29 @@ using SampleLibraryUI.Controls;
 using SampleLibraryUI.Properties;
 using SampleLibraryZeroTouch;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 
 namespace SampleLibraryUI.Examples
 {
-     /*
-      * This exmple shows how to create a UI node for Dynamo
-      * which loads custom data-bound UI into the node's view
-      * at run time. 
-     
-      * Nodes with custom UI follow a different loading path
-      * than zero touch nodes. The assembly which contains
-      * this node needs to be located in the 'nodes' folder in
-      * Dynamo in order to be loaded at startup.
-     
-      * Dynamo uses the MVVM model of programming, 
-      * in which the UI is data-bound to the view model, which
-      * exposes data from the underlying model. Custom UI nodes 
-      * are a hybrid because NodeModel objects already have an
-      * associated NodeViewModel which you should never need to
-      * edit. So here we will create a data binding between 
-      * properties on our class and our custom UI.
-     */
+    /*
+     * This exmple shows how to create a UI node for Dynamo
+     * which loads custom data-bound UI into the node's view
+     * at run time. 
+
+     * Nodes with custom UI follow a different loading path
+     * than zero touch nodes. The assembly which contains
+     * this node needs to be located in the 'nodes' folder in
+     * Dynamo in order to be loaded at startup.
+
+     * Dynamo uses the MVVM model of programming, 
+     * in which the UI is data-bound to the view model, which
+     * exposes data from the underlying model. Custom UI nodes 
+     * are a hybrid because NodeModel objects already have an
+     * associated NodeViewModel which you should never need to
+     * edit. So here we will create a data binding between 
+     * properties on our class and our custom UI.
+    */
 
     // The NodeName attribute is what will display on 
     // top of the node in Dynamo
@@ -55,20 +56,20 @@ namespace SampleLibraryUI.Examples
     // Add the IsDesignScriptCompatible attribute to ensure
     // that it gets loaded in Dynamo.
     [IsDesignScriptCompatible]
-    public class SliderCustomNodeModel : NodeModel
+
+
+
+        public class SliderCustomNodeModel : NodeModel
     {
         #region private members
 
-        private double sliderValue;
+        public static double sliderValue;
         private double sliderCustom;
         public static List<double> sliderValueList = new List<double>();
         public static double sliderMoved = 10;
+        private double countValue = 2;
 
         int countTest = 7;
-
-
-
-        private int countValue;
 
         #endregion
 
@@ -84,7 +85,7 @@ namespace SampleLibraryUI.Examples
             set
             {
                 sliderValue = value;
-  //              RaisePropertyChanged("SliderValue");
+                RaisePropertyChanged("SliderValue");
                 OnNodeModified();
             }
         }
@@ -93,14 +94,22 @@ namespace SampleLibraryUI.Examples
         /// A value that will be bound to our
         /// custom UI's slider.
         /// </summary>
-        public double SliderMoved
+        public  double SliderMoved
         {
             get { return sliderMoved; }
             set
             {
                 sliderMoved = value;
                 RaisePropertyChanged("SliderMoved");
+                if (SliderControl.valueList != null)
+                {
+                    foreach (double doub in SliderControl.valueList)
+                    {
+                        sliderValueList.Add(doub);
+                        //                       sliderValueList.Add(sliderMoved);
+                    }
 
+                }
 
                 OnNodeModified();
             }
@@ -122,6 +131,7 @@ namespace SampleLibraryUI.Examples
                     foreach (double doub in SliderControl.valueList)
                     {
                         sliderValueList.Add(doub);
+ //                       sliderValueList.Add(sliderMoved);
                     }
                     
                 }
@@ -149,29 +159,35 @@ namespace SampleLibraryUI.Examples
             }
         }
 
-        public int CountValue
+        /// <summary>
+        /// A value that will be bound to our
+        /// custom UI's slider.
+        /// </summary>
+        public double CountValue
         {
             get { return countValue; }
             set
             {
-                countValue = (int)value;
+                countValue = value;
                 RaisePropertyChanged("CountValue");
 
                 OnNodeModified();
             }
         }
 
-        #endregion
+        
 
-        #region constructor
+            #endregion
 
-        /// <summary>
-        /// The constructor for a NodeModel is used to create
-        /// the input and output ports and specify the argument
-        /// lacing. It gets invoked when the node is added to 
-        /// the graph from the library or through copy/paste.
-        /// </summary>
-        public SliderCustomNodeModel()
+            #region constructor
+
+            /// <summary>
+            /// The constructor for a NodeModel is used to create
+            /// the input and output ports and specify the argument
+            /// lacing. It gets invoked when the node is added to 
+            /// the graph from the library or through copy/paste.
+            /// </summary>
+            public SliderCustomNodeModel()
         {
             // When you create a UI node, you need to do the
             // work of setting up the ports yourself. To do this,
@@ -296,6 +312,7 @@ namespace SampleLibraryUI.Examples
 
         #endregion
     }
+
 
     /// <summary>
     ///     View customizer for CustomNodeModel Node Model.

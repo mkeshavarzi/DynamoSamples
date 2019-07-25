@@ -85,6 +85,10 @@ public partial class SliderControl : UserControl
             }
 
             var element = sender as Slider;
+            SliderCustomNodeModel.sliderValue = e.NewValue;
+            SliderCustomNodeModel.sliderMoved = e.NewValue;
+
+
  //           debug.Text = SliderStackPanel.Children.IndexOf(element).ToString();
 
         }
@@ -92,7 +96,7 @@ public partial class SliderControl : UserControl
 
 
 
-
+/*
         private void CountValueChanged(object sender, TextChangedEventArgs e)
         {
             int count = 3;
@@ -148,12 +152,12 @@ public partial class SliderControl : UserControl
                     newTextBlock.Text = newSlider.Value.ToString();
                     newSlider.Width = 185;
 
-                    Binding myBinding = new Binding();
-                    myBinding.Source = SliderCustomNodeModel.sliderMoved;
-                    myBinding.Path = new PropertyPath("SliderMoved");
-                    myBinding.Mode = BindingMode.TwoWay;
-                    myBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                    BindingOperations.SetBinding(newSlider, Slider.ValueProperty, myBinding);
+ //                   Binding myBinding = new Binding();
+ //                   myBinding.Source = SliderCustomNodeModel.sliderMoved;
+ //                   myBinding.Path = new PropertyPath("SliderMoved");
+ //                   myBinding.Mode = BindingMode.TwoWay;
+ //                   myBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+ //                   BindingOperations.SetBinding(newSlider, Slider.ValueProperty, myBinding);
 
                     newSlider.ValueChanged += Slider_ValueChanged; 
 
@@ -167,12 +171,11 @@ public partial class SliderControl : UserControl
                 }
 
 
-               
+
 
             }
 
-
-            if(sliderDebug != null)
+            if (sliderDebug != null)
             {
                 //               Slider newControl = new Slider { DataContext = sliderDebug.DataContext };
                 //               SliderStackPanel_Copy.Children.Add(newControl);
@@ -181,11 +184,22 @@ public partial class SliderControl : UserControl
 
                 Slider newDeepCopy = SliderDeepCopy(sliderDebug);
                 SliderStackPanel_Copy.Children.Add(newDeepCopy);
-                newDeepCopy.ValueChanged += Slider_ValueChanged
-            }
+                newDeepCopy.ValueChanged += Slider_ValueChanged;
+                newDeepCopy.BindingGroup = sliderDebug.BindingGroup;
 
+                Binding myBinding = new Binding();
+                myBinding.Source = SliderCustomNodeModel.sliderMoved;
+                myBinding.Path = new PropertyPath("SliderMoved");
+                myBinding.Mode = BindingMode.TwoWay;
+                myBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                BindingOperations.SetBinding(newDeepCopy, Slider.ValueProperty, myBinding);
+            }
         }
 
+
+*/
+  
         public Slider SliderDeepCopy(Slider element)
         {
             string shapestring = XamlWriter.Save(element);
@@ -193,6 +207,13 @@ public partial class SliderControl : UserControl
             XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
             Slider DeepCopyobject = (Slider)XamlReader.Load(xmlTextReader);
             return DeepCopyobject;
+
+
         }
     }
+
+
+
+
+
 }

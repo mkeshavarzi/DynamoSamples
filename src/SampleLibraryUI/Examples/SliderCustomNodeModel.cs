@@ -59,7 +59,7 @@ namespace SampleLibraryUI.Examples
 
 
 
-        public class SliderCustomNodeModel : NodeModel
+    public class SliderCustomNodeModel : NodeModel
     {
         #region private members
 
@@ -94,19 +94,18 @@ namespace SampleLibraryUI.Examples
         /// A value that will be bound to our
         /// custom UI's slider.
         /// </summary>
-        public  double SliderMoved
+        public double SliderMoved
         {
             get { return sliderMoved; }
             set
             {
                 sliderMoved = value;
-                RaisePropertyChanged("SliderMoved");
+                RaisePropertyChanged("MovedSliderProp");
                 if (SliderControl.valueList != null)
                 {
                     foreach (double doub in SliderControl.valueList)
                     {
                         sliderValueList.Add(doub);
-                        //                       sliderValueList.Add(sliderMoved);
                     }
 
                 }
@@ -141,8 +140,6 @@ namespace SampleLibraryUI.Examples
         }
 
 
-        
-
         /// <summary>
         /// A value that will be bound to our
         /// custom UI's slider.
@@ -170,6 +167,7 @@ namespace SampleLibraryUI.Examples
             {
                 countValue = value;
                 RaisePropertyChanged("CountValue");
+                SliderControl.AddSlider();
 
                 OnNodeModified();
             }
@@ -312,6 +310,77 @@ namespace SampleLibraryUI.Examples
 
         #endregion
     }
+
+    public class SliderINotifyModel : INotifyPropertyChanged
+    {
+        private double sliderGenValue;
+
+        public SliderINotifyModel() { }
+
+        public double MovedSliderProp
+        {
+            get { return sliderGenValue; }
+            set
+            {
+                sliderGenValue = value;
+                OnPropertyChanged("MovedSliderProp");
+
+                if (SliderControl.valueList != null)
+                {
+                    foreach (double doub in SliderControl.valueList)
+                    {
+                        SliderCustomNodeModel.sliderValueList.Add(doub);
+                    }
+
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string info)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(info));
+            }
+        }
+    }
+
+    public class MyData : INotifyPropertyChanged
+    {
+        private string myDataProperty;
+
+        public MyData() { }
+
+        public MyData(DateTime dateTime)
+        {
+            myDataProperty = "Last bound time was " + dateTime.ToLongTimeString();
+        }
+
+        public String MyDataProperty
+        {
+            get { return myDataProperty; }
+            set
+            {
+                myDataProperty = value;
+                OnPropertyChanged("MyDataProperty");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string info)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(info));
+            }
+        }
+    }
+
 
 
     /// <summary>

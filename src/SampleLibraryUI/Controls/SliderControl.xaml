@@ -31,6 +31,11 @@
                     </InlineUIContainer></TextBlock>
                 <TextBox x:Name="stepTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="1" Width="142"/>
             </StackPanel>
+            <StackPanel  Orientation="Horizontal">
+                <TextBlock x:Name="myText" Height="14" Margin="7,0,5,0" TextWrapping="Wrap" Width="194"><Run Text="Step"/><InlineUIContainer>
+                        <StackPanel Height="100" Width="50"/>
+                    </InlineUIContainer></TextBlock>
+            </StackPanel>
             <StackPanel Orientation="Horizontal"/>
             <StackPanel x:Name="SliderStackPanel">
                 <Slider Margin="5,0,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="Both" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="32" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="190" BorderThickness="0" BorderBrush="#00000000">

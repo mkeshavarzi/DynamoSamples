@@ -64,21 +64,13 @@ namespace SampleLibraryUI.Examples
         #region private members
 
         public static double sliderValue;
-        private double sliderCustom;
         public static List<double> sliderValueList = new List<double>();
-        public static double sliderMoved = 10;
         private double countValue = 2;
-
-        int countTest = 7;
 
         #endregion
 
         #region properties
 
-        /// <summary>
-        /// A value that will be bound to our
-        /// custom UI's slider.
-        /// </summary>
         public double SliderValue
         {
             get { return sliderValue; }
@@ -90,41 +82,12 @@ namespace SampleLibraryUI.Examples
             }
         }
 
-        /// <summary>
-        /// A value that will be bound to our
-        /// custom UI's slider.
-        /// </summary>
-        public double SliderMoved
-        {
-            get { return sliderMoved; }
-            set
-            {
-                sliderMoved = value;
-                RaisePropertyChanged("MovedSliderProp");
-                if (SliderControl.valueList != null)
-                {
-                    foreach (double doub in SliderControl.valueList)
-                    {
-                        sliderValueList.Add(doub);
-                    }
 
-                }
-
-                OnNodeModified();
-            }
-        }
-
-        /// <summary>
-        /// A value that will be bound to our
-        /// custom UI's slider.
-        /// </summary>
         public List<double> SliderValueList
         {
             get { return sliderValueList; }
             set
             {
-
-                countTest++;
                if (SliderControl.valueList != null)
                 {
                     foreach (double doub in SliderControl.valueList)
@@ -134,32 +97,11 @@ namespace SampleLibraryUI.Examples
                     }
                     
                 }
-                RaisePropertyChanged("SliderValue");
+                RaisePropertyChanged("MovedSliderProp");
                 OnNodeModified();
             }
         }
 
-
-        /// <summary>
-        /// A value that will be bound to our
-        /// custom UI's slider.
-        /// </summary>
-        public double SliderCustom
-        {
-            get { return sliderCustom; }
-            set
-            {
-                sliderCustom = value;
-                RaisePropertyChanged("SliderCustom");
-
-                OnNodeModified();
-            }
-        }
-
-        /// <summary>
-        /// A value that will be bound to our
-        /// custom UI's slider.
-        /// </summary>
         public double CountValue
         {
             get { return countValue; }
@@ -173,6 +115,10 @@ namespace SampleLibraryUI.Examples
             }
         }
 
+        public void NodeModified()
+        {
+            OnNodeModified();
+        }
         
 
             #endregion
@@ -249,16 +195,8 @@ namespace SampleLibraryUI.Examples
             // We create a DoubleNode to wrap the value 'sliderValue' that
             // we've stored in a private member.
 
-            var testNode  = AstFactory.BuildDoubleNode(232344);
-            var testNode2 = AstFactory.BuildDoubleNode(3423432);
 
 
-            List<AssociativeNode> assoListTest = new List<AssociativeNode>();
-
-            assoListTest.Add(testNode);
-            assoListTest.Add(testNode2);
-
-            var testList = AstFactory.BuildExprList(assoListTest);
 
 
             List<AssociativeNode> sliderValueAssoList = new List<AssociativeNode>();
@@ -325,14 +263,20 @@ namespace SampleLibraryUI.Examples
                 sliderGenValue = value;
                 OnPropertyChanged("MovedSliderProp");
 
-                if (SliderControl.valueList != null)
+
+
+                if (SliderCustomNodeModel.sliderValueList.Count<2)
                 {
-                    foreach (double doub in SliderControl.valueList)
-                    {
-                        SliderCustomNodeModel.sliderValueList.Add(doub);
-                    }
-
+                    SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
                 }
+
+                if (SliderCustomNodeModel.sliderValueList.Count >= 2)
+                {
+                    SliderCustomNodeModel.sliderValueList[1] = sliderGenValue;
+                }
+
+                SliderCustomNodeModel invokeNodeMod = new SliderCustomNodeModel();
+                invokeNodeMod.NodeModified();
             }
         }
 
@@ -347,40 +291,6 @@ namespace SampleLibraryUI.Examples
             }
         }
     }
-
-    public class MyData : INotifyPropertyChanged
-    {
-        private string myDataProperty;
-
-        public MyData() { }
-
-        public MyData(DateTime dateTime)
-        {
-            myDataProperty = "Last bound time was " + dateTime.ToLongTimeString();
-        }
-
-        public String MyDataProperty
-        {
-            get { return myDataProperty; }
-            set
-            {
-                myDataProperty = value;
-                OnPropertyChanged("MyDataProperty");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string info)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(info));
-            }
-        }
-    }
-
 
 
     /// <summary>

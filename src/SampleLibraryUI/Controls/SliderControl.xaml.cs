@@ -67,15 +67,6 @@ public partial class SliderControl : UserControl
                 }
             }
 
-            if(myText != null)
-            {
-                // Make a new source.
-                MyData myDataObject = new MyData(DateTime.Now);
-                Binding myBinding = new Binding("MyDataProperty");
-                myBinding.Source = myDataObject;
-                // Bind the new data source to the myText TextBlock control's Text dependency property.
-                myText.SetBinding(TextBlock.TextProperty, myBinding);
-            }
 
 
         }
@@ -103,7 +94,6 @@ public partial class SliderControl : UserControl
 
             var element = sender as Slider;
             SliderCustomNodeModel.sliderValue = e.NewValue;
-            SliderCustomNodeModel.sliderMoved = e.NewValue;
 
 
 
@@ -143,13 +133,6 @@ public partial class SliderControl : UserControl
              // Bind the new data source to the myText TextBlock control's Text dependency property.
              newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
 
-
-            /*
-             Binding newBinding = new Binding("MovedSliderProp");
-             newBinding.Source = SliderCustomNodeModel.sliderMoved;
-             // Bind the new data source to the myText TextBlock control's Text dependency property.
-             newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
-            */
 
         }
 
@@ -241,20 +224,9 @@ public partial class SliderControl : UserControl
                     {
                         //               Slider newControl = new Slider { DataContext = sliderDebug.DataContext };
                         //               SliderStackPanel_Copy.Children.Add(newControl);
-                                       newControl.ValueChanged += Slider_ValueChanged;
+                        //               newControl.ValueChanged += Slider_ValueChanged;
                         //              newControl.BindingGroup = sliderDebug.BindingGroup;
 
-                        //Slider newDeepCopy = SliderDeepCopy(sliderDebug);
-                       // SliderStackPanel_Copy.Children.Add(newDeepCopy);
-                       // newDeepCopy.ValueChanged += Slider_ValueChanged;
-                       // newDeepCopy.BindingGroup = sliderDebug.BindingGroup;
-
-                        //Binding myBinding = new Binding();
-                        //myBinding.Source = SliderCustomNodeModel.sliderMoved;
-                       // myBinding.Path = new PropertyPath("SliderMoved");
-                       // myBinding.Mode = BindingMode.TwoWay;
-                      //  myBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                       // BindingOperations.SetBinding(newDeepCopy, Slider.ValueProperty, myBinding);
                     }
                 }
 
@@ -268,7 +240,6 @@ public partial class SliderControl : UserControl
             XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
             Slider DeepCopyobject = (Slider)XamlReader.Load(xmlTextReader);
             return DeepCopyobject;
-
 
         }
     }

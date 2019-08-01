@@ -57,6 +57,50 @@ namespace SampleLibraryUI.Examples
     // that it gets loaded in Dynamo.
     [IsDesignScriptCompatible]
 
+    public class SliderINotifyModel : INotifyPropertyChanged
+    {
+        private double sliderGenValue;
+
+        public SliderINotifyModel() { }
+
+        public double MovedSliderProp
+        {
+            get { return sliderGenValue; }
+            set
+            {
+                sliderGenValue = value;
+                OnPropertyChanged("MovedSliderProp");
+                
+
+
+
+                if (SliderCustomNodeModel.sliderValueList.Count < 2)
+                {
+                    SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
+                }
+
+                if (SliderCustomNodeModel.sliderValueList.Count >= 2)
+                {
+                    SliderCustomNodeModel.sliderValueList[1] = sliderGenValue;
+                }
+
+                SliderCustomNodeModel invokeNodeMod = new SliderCustomNodeModel();
+                // invokeNodeMod.NodeModified();
+                invokeNodeMod.OnNodeModified();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string info)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(info));
+            }
+        }
+    }
 
 
     public class SliderCustomNodeModel : NodeModel
@@ -79,6 +123,8 @@ namespace SampleLibraryUI.Examples
                 sliderValue = value;
                 RaisePropertyChanged("SliderValue");
                 OnNodeModified();
+
+               
             }
         }
 
@@ -249,48 +295,6 @@ namespace SampleLibraryUI.Examples
         #endregion
     }
 
-    public class SliderINotifyModel : INotifyPropertyChanged
-    {
-        private double sliderGenValue;
-
-        public SliderINotifyModel() { }
-
-        public double MovedSliderProp
-        {
-            get { return sliderGenValue; }
-            set
-            {
-                sliderGenValue = value;
-                OnPropertyChanged("MovedSliderProp");
-
-
-
-                if (SliderCustomNodeModel.sliderValueList.Count<2)
-                {
-                    SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
-                }
-
-                if (SliderCustomNodeModel.sliderValueList.Count >= 2)
-                {
-                    SliderCustomNodeModel.sliderValueList[1] = sliderGenValue;
-                }
-
-                SliderCustomNodeModel invokeNodeMod = new SliderCustomNodeModel();
-                invokeNodeMod.NodeModified();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string info)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(info));
-            }
-        }
-    }
 
 
     /// <summary>
@@ -317,15 +321,13 @@ namespace SampleLibraryUI.Examples
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
             var sliderControl = new SliderControl();
-            var sliderControl2 = new SliderControl();
+ //           SliderControl.sliderCustomNodeModel = model;
             nodeView.inputGrid.Children.Add(sliderControl);
-            nodeView.inputGrid.Children.Add(sliderControl2);
 
             // Set the data context for our control to be the node model.
             // Properties in this class which are data bound will raise 
             // property change notifications which will update the UI.
             sliderControl.DataContext = model;
-            sliderControl2.DataContext = model;
         }
 
         /// <summary>

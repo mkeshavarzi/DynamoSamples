@@ -32,6 +32,8 @@ public partial class SliderControl : UserControl
         private static Slider sliderDebugStatic;
         private static StackPanel stackPanelStatic;
 
+        public static SliderCustomNodeModel sliderCustomNodeModel;
+
         public SliderControl()
         {
             InitializeComponent();
@@ -123,6 +125,7 @@ public partial class SliderControl : UserControl
         {
 
              Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
+             
              stackPanelStatic.Children.Add(newDeepCopy);
 
 
@@ -132,6 +135,7 @@ public partial class SliderControl : UserControl
              newBinding.Source = newDataObject;
              // Bind the new data source to the myText TextBlock control's Text dependency property.
              newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
+  //           newDeepCopy.ValueChanged += (sender, e) => { sliderCustomNodeModel.OnNodeModified(); };
 
 
         }

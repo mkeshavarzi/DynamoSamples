@@ -162,6 +162,13 @@ public partial class SliderControl : UserControl
              newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
             */
 
+            /*
+             Binding newBinding = new Binding("MovedSliderProp");
+             newBinding.Source = SliderCustomNodeModel.sliderMoved;
+             // Bind the new data source to the myText TextBlock control's Text dependency property.
+             newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
+            */
+
         }
 
 

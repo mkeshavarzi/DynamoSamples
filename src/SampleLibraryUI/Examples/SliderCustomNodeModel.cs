@@ -12,6 +12,11 @@ using SampleLibraryUI.Properties;
 using SampleLibraryZeroTouch;
 using Newtonsoft.Json;
 using System.ComponentModel;
+using Dynamo.Graph;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using System.Xml;
 
 
 namespace SampleLibraryUI.Examples
@@ -65,9 +70,12 @@ namespace SampleLibraryUI.Examples
 
         public static double sliderValue;
         public static List<double> sliderValueList = new List<double>();
-        private double countValue = 2;
+        private int countValue = 2;
+        public static int slidersToAddCount;
 
         #endregion
+
+        public static ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
 
         #region properties
 
@@ -83,33 +91,16 @@ namespace SampleLibraryUI.Examples
         }
 
 
-        public List<double> SliderValueList
-        {
-            get { return sliderValueList; }
-            set
-            {
-                if (SliderControl.valueList != null)
-                {
-                    foreach (double doub in SliderControl.valueList)
-                    {
-                        sliderValueList.Add(doub);
-                        //                       sliderValueList.Add(sliderMoved);
-                    }
 
-                }
-                RaisePropertyChanged("MovedSliderProp");
-                OnNodeModified();
-            }
-        }
-
-        public double CountValue
+        public int CountValue
         {
             get { return countValue; }
             set
             {
+                slidersToAddCount = value - countValue;
                 countValue = value;
                 RaisePropertyChanged("CountValue");
-                SliderControl.AddSlider();
+                SliderControl.AddSlider(this);
 
                 OnNodeModified();
             }
@@ -117,7 +108,10 @@ namespace SampleLibraryUI.Examples
 
         public void NodeModified()
         {
+
             OnNodeModified();
+            sliderValueCollection.CollectionChanged += SliderItems_CollectionChanged;
+
         }
 
 
@@ -158,7 +152,7 @@ namespace SampleLibraryUI.Examples
             sliderValue = 5555;
 
             //set initial count value;
-            countValue = 3;
+            countValue = 1;
         }
 
         // Starting with Dynamo v2.0 you must add Json constructors for all nodeModel
@@ -166,7 +160,16 @@ namespace SampleLibraryUI.Examples
         // do so will result in incorrect ports being generated upon serialization/deserialization.
         // This constructor is called when opening a Json graph.
         [JsonConstructor]
-        SliderCustomNodeModel(IEnumerable<PortModel> inPorts, IEnumerable<PortModel> outPorts) : base(inPorts, outPorts) { }
+        SliderCustomNodeModel(IEnumerable<PortModel> inPorts, IEnumerable<PortModel> outPorts) : base(inPorts, outPorts)
+        {
+            sliderValueCollection.CollectionChanged += SliderItems_CollectionChanged;
+        }
+
+        private void SliderItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            RaisePropertyChanged("MovedSliderProp");
+            OnNodeModified();
+        }
 
         #endregion
 
@@ -249,9 +252,11 @@ namespace SampleLibraryUI.Examples
         #endregion
     }
 
+   
     public class SliderINotifyModel : INotifyPropertyChanged
     {
         private double sliderGenValue;
+        public SliderCustomNodeModel sliderCusModel; 
 
         public SliderINotifyModel() { }
 
@@ -263,20 +268,19 @@ namespace SampleLibraryUI.Examples
                 sliderGenValue = value;
                 OnPropertyChanged("MovedSliderProp");
 
-
-
                 if (SliderCustomNodeModel.sliderValueList.Count < 2)
                 {
                     SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
                 }
+
 
                 if (SliderCustomNodeModel.sliderValueList.Count >= 2)
                 {
                     SliderCustomNodeModel.sliderValueList[1] = sliderGenValue;
                 }
 
-                SliderCustomNodeModel invokeNodeMod = new SliderCustomNodeModel();
-                invokeNodeMod.NodeModified();
+                sliderCusModel.OnNodeModified(true);
+                
             }
         }
 

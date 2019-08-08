@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Autodesk.DesignScript.Runtime;
 using Dynamo.Controls;
@@ -28,6 +29,8 @@ namespace SampleLibraryUI.Controls
     /// </summary>
     public partial class SliderControl : UserControl
     {
+
+
 
         private static Slider sliderDebugStatic;
         private static StackPanel stackPanelStatic;
@@ -90,6 +93,7 @@ namespace SampleLibraryUI.Controls
             {
                 valueList.Add(e.NewValue);
                 SliderCustomNodeModel.sliderValueList.Add(e.NewValue);
+ //               sliderValueCollection.Add(e.NewValue);
             }
 
             var element = sender as Slider;
@@ -119,15 +123,25 @@ namespace SampleLibraryUI.Controls
             return staticStackPanel;
         }
 
-        public static void AddSlider()
+        public static void AdditionalSliders(NodeModel datModel, int slidersToAdd)
         {
+            for(int i = 0; i<slidersToAdd; i++)
+            {
+                AddSlider(datModel);
+            }
 
+        }
+
+
+        public static void AddSlider(NodeModel datModel)
+        {
             Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
             stackPanelStatic.Children.Add(newDeepCopy);
 
 
             //double movedSlider = new double();
             SliderINotifyModel newDataObject = new SliderINotifyModel();
+            newDataObject.sliderCusModel = datModel as SliderCustomNodeModel;
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
             // Bind the new data source to the myText TextBlock control's Text dependency property.

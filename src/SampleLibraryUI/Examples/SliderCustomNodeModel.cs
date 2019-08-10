@@ -71,6 +71,7 @@ namespace SampleLibraryUI.Examples
         public static double sliderValue;
         public static List<double> sliderValueList = new List<double>();
         private int countValue = 2;
+        public static int newCount;
         public static int slidersToAddCount;
 
         #endregion
@@ -97,10 +98,13 @@ namespace SampleLibraryUI.Examples
             get { return countValue; }
             set
             {
+                int oldCount = countValue;
                 slidersToAddCount = value - countValue;
                 countValue = value;
+                newCount = value;
                 RaisePropertyChanged("CountValue");
-                SliderControl.AddSlider(this);
+                SliderControl.AdditionalSliders(this, oldCount, CountValue);
+//                SliderControl.AddSlider(this);
 
                 OnNodeModified();
             }
@@ -256,7 +260,9 @@ namespace SampleLibraryUI.Examples
     public class SliderINotifyModel : INotifyPropertyChanged
     {
         private double sliderGenValue;
-        public SliderCustomNodeModel sliderCusModel; 
+        private int newCount = SliderCustomNodeModel.newCount;
+        public SliderCustomNodeModel sliderCusModel;
+        public int index;
 
         public SliderINotifyModel() { }
 
@@ -266,9 +272,12 @@ namespace SampleLibraryUI.Examples
             set
             {
                 sliderGenValue = value;
+
+ //              OnPropertyChanged("MovedSliderProp_" + 0.ToString());
+ //               OnPropertyChanged("MovedSliderProp_" + 1.ToString());
                 OnPropertyChanged("MovedSliderProp");
 
-                if (SliderCustomNodeModel.sliderValueList.Count < 2)
+                if (SliderCustomNodeModel.sliderValueList.Count < (index+1))
                 {
                     SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
                 }
@@ -276,7 +285,7 @@ namespace SampleLibraryUI.Examples
 
                 if (SliderCustomNodeModel.sliderValueList.Count >= 2)
                 {
-                    SliderCustomNodeModel.sliderValueList[1] = sliderGenValue;
+                    SliderCustomNodeModel.sliderValueList[index] = sliderGenValue;
                 }
 
                 sliderCusModel.OnNodeModified(true);

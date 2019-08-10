@@ -31,7 +31,6 @@ namespace SampleLibraryUI.Controls
     {
 
 
-
         private static Slider sliderDebugStatic;
         private static StackPanel stackPanelStatic;
 
@@ -123,17 +122,17 @@ namespace SampleLibraryUI.Controls
             return staticStackPanel;
         }
 
-        public static void AdditionalSliders(NodeModel datModel, int slidersToAdd)
+        public static void AdditionalSliders(NodeModel datModel, int oldCount, int newCount)
         {
-            for(int i = 0; i<slidersToAdd; i++)
+            for(int i = oldCount; i<newCount; i++)
             {
-                AddSlider(datModel);
+                AddSlider(datModel, i);
             }
 
         }
 
 
-        public static void AddSlider(NodeModel datModel)
+        public static void AddSlider(NodeModel datModel, int index)
         {
             Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
             stackPanelStatic.Children.Add(newDeepCopy);
@@ -142,6 +141,7 @@ namespace SampleLibraryUI.Controls
             //double movedSlider = new double();
             SliderINotifyModel newDataObject = new SliderINotifyModel();
             newDataObject.sliderCusModel = datModel as SliderCustomNodeModel;
+            newDataObject.index = index;
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
             // Bind the new data source to the myText TextBlock control's Text dependency property.

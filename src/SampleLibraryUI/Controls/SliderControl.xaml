@@ -44,6 +44,7 @@
                         <TextBlock Text="Slide this to crank up the awesome."/>
                     </Slider.ToolTip>
                 </Slider>
+                <TextBox x:Name="textBoxDebug" Height="23" TextWrapping="Wrap" Text="{Binding SliderValue,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Margin="0,0,162,0"/>
 
             </StackPanel>
         </StackPanel>

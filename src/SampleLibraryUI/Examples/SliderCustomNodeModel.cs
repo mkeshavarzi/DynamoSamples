@@ -72,7 +72,7 @@ namespace SampleLibraryUI.Examples
         public static List<double> sliderValueList = new List<double>();
         private int countValue = 2;
         public static int newCount;
-        public static int slidersToAddCount;
+        public static int slidersCountChange;
 
         #endregion
 
@@ -99,12 +99,19 @@ namespace SampleLibraryUI.Examples
             set
             {
                 int oldCount = countValue;
-                slidersToAddCount = value - countValue;
+                slidersCountChange = value - countValue;
                 countValue = value;
                 newCount = value;
                 RaisePropertyChanged("CountValue");
-                SliderControl.AdditionalSliders(this, oldCount, CountValue);
-//                SliderControl.AddSlider(this);
+                if (slidersCountChange > 0)
+                {
+                    SliderControl.AdditionalSliders(this, oldCount, CountValue);
+                }
+                if (slidersCountChange < 0)
+                {
+                    SliderControl.DeleteSliders(this, oldCount, CountValue);
+                }
+                //                SliderControl.AddSlider(this);
 
                 OnNodeModified();
             }

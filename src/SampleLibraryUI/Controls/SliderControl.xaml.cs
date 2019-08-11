@@ -92,6 +92,7 @@ namespace SampleLibraryUI.Controls
             {
                 valueList.Add(e.NewValue);
                 SliderCustomNodeModel.sliderValueList.Add(e.NewValue);
+
  //               sliderValueCollection.Add(e.NewValue);
             }
 
@@ -132,11 +133,20 @@ namespace SampleLibraryUI.Controls
         }
 
 
+        public static void DeleteSliders(NodeModel datModel, int oldCount, int newCount)
+        {
+            for (int i = (oldCount-1); i > (newCount-1); i--)
+            {
+                DeleteSlider(datModel, i);
+            }
+
+        }
+
         public static void AddSlider(NodeModel datModel, int index)
         {
             Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
             stackPanelStatic.Children.Add(newDeepCopy);
-
+            SliderCustomNodeModel.sliderValueList.Add(0);
 
             //double movedSlider = new double();
             SliderINotifyModel newDataObject = new SliderINotifyModel();
@@ -146,8 +156,12 @@ namespace SampleLibraryUI.Controls
             newBinding.Source = newDataObject;
             // Bind the new data source to the myText TextBlock control's Text dependency property.
             newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
+        }
 
-
+        public static void DeleteSlider (NodeModel datModel, int index)
+        {
+            stackPanelStatic.Children.RemoveAt(index+1);
+            SliderCustomNodeModel.sliderValueList.RemoveAt(index);
         }
 
 
@@ -256,6 +270,17 @@ namespace SampleLibraryUI.Controls
             return DeepCopyobject;
 
         }
+
+        public static Slider TextBoxDeepCopy(Slider element)
+        {
+            string shapestring = XamlWriter.Save(element);
+            StringReader stringReader = new StringReader(shapestring);
+            XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
+            Slider DeepCopyobject = ( Slider)XamlReader.Load(xmlTextReader);
+            return DeepCopyobject;
+
+        }
+
     }
 
 

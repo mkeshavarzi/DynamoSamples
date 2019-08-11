@@ -33,12 +33,16 @@ namespace SampleLibraryUI.Controls
 
         private static Slider sliderDebugStatic;
         private static StackPanel stackPanelStatic;
+        private static TextBox textBoxDebugStatic;
+
 
         public SliderControl()
         {
             InitializeComponent();
 
             sliderDebugStatic = StaticSlider(sliderDebugStatic, sliderDebug);
+            textBoxDebugStatic = StaticTextBox(textBoxDebugStatic, textBoxDebug);
+
             stackPanelStatic = StaticStackPanel(stackPanelStatic, SliderStackPanel_Copy);
 
             int count = 3;
@@ -117,6 +121,12 @@ namespace SampleLibraryUI.Controls
             return staticSlider;
         }
 
+        public static TextBox StaticTextBox(TextBox staticTextBox, TextBox instanceTextBox)
+        {
+            staticTextBox = instanceTextBox;
+            return staticTextBox;
+        }
+
         public static StackPanel StaticStackPanel(StackPanel staticStackPanel, StackPanel instanceStackPanel)
         {
             staticStackPanel = instanceStackPanel;
@@ -128,6 +138,7 @@ namespace SampleLibraryUI.Controls
             for(int i = oldCount; i<newCount; i++)
             {
                 AddSlider(datModel, i);
+                AddTextBox(datModel, i);
             }
 
         }
@@ -154,6 +165,7 @@ namespace SampleLibraryUI.Controls
             newDataObject.index = index;
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
+            newBinding.Mode = BindingMode.TwoWay;
             // Bind the new data source to the myText TextBlock control's Text dependency property.
             newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
         }
@@ -164,7 +176,22 @@ namespace SampleLibraryUI.Controls
             SliderCustomNodeModel.sliderValueList.RemoveAt(index);
         }
 
+        public static void AddTextBox(NodeModel datModel, int index)
+        {
+            TextBox newTextBoxDeepCopy = TextBoxDeepCopy(textBoxDebugStatic);
+            stackPanelStatic.Children.Add(newTextBoxDeepCopy);
 
+            //double movedSlider = new double();
+            SliderINotifyModel newDataObject = new SliderINotifyModel();
+            newDataObject.sliderCusModel = datModel as SliderCustomNodeModel;
+            newDataObject.index = index;
+            Binding newBinding = new Binding("MovedSliderProp");
+            newBinding.Source = newDataObject;
+            newBinding.Mode = BindingMode.TwoWay;
+            newBinding.UpdateSourceTrigger =  UpdateSourceTrigger.LostFocus;
+            // Bind the new data source to the myText TextBlock control's Text dependency property.
+            newTextBoxDeepCopy.SetBinding(TextBox.TextProperty, newBinding);
+        }
 
 
 
@@ -271,12 +298,12 @@ namespace SampleLibraryUI.Controls
 
         }
 
-        public static Slider TextBoxDeepCopy(Slider element)
+        public static TextBox TextBoxDeepCopy(TextBox element)
         {
             string shapestring = XamlWriter.Save(element);
             StringReader stringReader = new StringReader(shapestring);
             XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
-            Slider DeepCopyobject = ( Slider)XamlReader.Load(xmlTextReader);
+            TextBox DeepCopyobject = (TextBox)XamlReader.Load(xmlTextReader);
             return DeepCopyobject;
 
         }

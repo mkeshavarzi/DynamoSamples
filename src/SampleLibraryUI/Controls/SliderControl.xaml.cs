@@ -147,8 +147,9 @@ namespace SampleLibraryUI.Controls
                 newDeepCopySP.Children.Clear();
                 stackPanel_AllSlidersStatic.Children.Add(newDeepCopySP);
 
-                AddSlider(datModel, i, newDeepCopySP);
                 AddTextBox(datModel, i, newDeepCopySP);
+                AddSlider(datModel, i, newDeepCopySP);
+
             }
 
         }

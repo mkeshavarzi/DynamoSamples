@@ -115,17 +115,13 @@ namespace SampleLibraryUI.Examples
                 countValue = value;
                 newCount = value;
                 RaisePropertyChanged("CountValue");
-                if (slidersCountChange > 0)
+                if ((slidersCountChange > 0)&& (oldCount > 0))
                 {
                     SliderControl.AdditionalSliders(this, oldCount, CountValue);
                 }
-                if (slidersCountChange < 0)
+                if ((slidersCountChange < 0)&& (oldCount > 1))
                 {
-                    if (oldCount > 1)
-                    {
                         SliderControl.DeleteSliders(this, oldCount, CountValue);
-
-                    }
                 }
 
                 OnNodeModified();

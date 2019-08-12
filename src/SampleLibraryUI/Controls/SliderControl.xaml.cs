@@ -33,6 +33,7 @@ namespace SampleLibraryUI.Controls
 
         private static Slider sliderDebugStatic;
         private static StackPanel stackPanelStatic;
+        private static StackPanel stackPanel_AllSlidersStatic;
         private static TextBox textBoxDebugStatic;
 
 
@@ -44,6 +45,7 @@ namespace SampleLibraryUI.Controls
             textBoxDebugStatic = StaticTextBox(textBoxDebugStatic, textBoxDebug);
 
             stackPanelStatic = StaticStackPanel(stackPanelStatic, SliderStackPanel_Copy);
+            stackPanel_AllSlidersStatic = StaticStackPanel(stackPanel_AllSlidersStatic, SliderStackPanel_AllSliders);
 
             int count = 3;
             if (SliderStackPanel != null)
@@ -84,24 +86,24 @@ namespace SampleLibraryUI.Controls
         private void Slider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
 
         {
-            debug.Text = e.NewValue.ToString();
+//            debug.Text = e.NewValue.ToString();
 
             if (valueList.Count > 0)
             {
-                valueList[0] = e.NewValue;
-                SliderCustomNodeModel.sliderValueList[0] = e.NewValue;
+//                valueList[0] = e.NewValue;
+ //               SliderCustomNodeModel.sliderValueList[0] = e.NewValue;
             }
 
             else
             {
-                valueList.Add(e.NewValue);
-                SliderCustomNodeModel.sliderValueList.Add(e.NewValue);
+ //               valueList.Add(e.NewValue);
+//                SliderCustomNodeModel.sliderValueList.Add(e.NewValue);
 
  //               sliderValueCollection.Add(e.NewValue);
             }
 
-            var element = sender as Slider;
-            SliderCustomNodeModel.sliderValue = e.NewValue;
+ //           var element = sender as Slider;
+ //           SliderCustomNodeModel.sliderValue = e.NewValue;
 
 
 
@@ -112,7 +114,10 @@ namespace SampleLibraryUI.Controls
         }
         private void Slider_ValueCustom(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e) { }
 
+        private void MovedSliderProp_Changed(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
 
+        }
 
 
         public static Slider StaticSlider(Slider staticSlider, Slider instanceSlider)
@@ -137,8 +142,13 @@ namespace SampleLibraryUI.Controls
         {
             for(int i = oldCount; i<newCount; i++)
             {
-                AddSlider(datModel, i);
-                AddTextBox(datModel, i);
+
+                StackPanel newDeepCopySP = StackPanelDeepCopy(stackPanelStatic);
+                newDeepCopySP.Children.Clear();
+                stackPanel_AllSlidersStatic.Children.Add(newDeepCopySP);
+
+                AddSlider(datModel, i, newDeepCopySP);
+                AddTextBox(datModel, i, newDeepCopySP);
             }
 
         }
@@ -146,18 +156,21 @@ namespace SampleLibraryUI.Controls
 
         public static void DeleteSliders(NodeModel datModel, int oldCount, int newCount)
         {
-            for (int i = (oldCount-1); i > (newCount-1); i--)
+            for (int i = (oldCount-2); i > (newCount-2); i--)
             {
                 DeleteSlider(datModel, i);
             }
 
         }
 
-        public static void AddSlider(NodeModel datModel, int index)
+        public static void AddSlider(NodeModel datModel, int index, StackPanel sliderSP)
         {
-            Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
-            stackPanelStatic.Children.Add(newDeepCopy);
+
             SliderCustomNodeModel.sliderValueList.Add(0);
+
+
+            Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
+            sliderSP.Children.Add(newDeepCopy);
 
             //double movedSlider = new double();
             SliderINotifyModel newDataObject = new SliderINotifyModel();
@@ -172,14 +185,14 @@ namespace SampleLibraryUI.Controls
 
         public static void DeleteSlider (NodeModel datModel, int index)
         {
-            stackPanelStatic.Children.RemoveAt(index+1);
+            stackPanel_AllSlidersStatic.Children.RemoveAt(index);
             SliderCustomNodeModel.sliderValueList.RemoveAt(index);
         }
 
-        public static void AddTextBox(NodeModel datModel, int index)
+        public static void AddTextBox(NodeModel datModel, int index, StackPanel sliderSP)
         {
             TextBox newTextBoxDeepCopy = TextBoxDeepCopy(textBoxDebugStatic);
-            stackPanelStatic.Children.Add(newTextBoxDeepCopy);
+            sliderSP.Children.Add(newTextBoxDeepCopy);
 
             //double movedSlider = new double();
             SliderINotifyModel newDataObject = new SliderINotifyModel();
@@ -188,9 +201,11 @@ namespace SampleLibraryUI.Controls
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
             newBinding.Mode = BindingMode.TwoWay;
+ 
             newBinding.UpdateSourceTrigger =  UpdateSourceTrigger.LostFocus;
             // Bind the new data source to the myText TextBlock control's Text dependency property.
             newTextBoxDeepCopy.SetBinding(TextBox.TextProperty, newBinding);
+            newTextBoxDeepCopy.Text = newDataObject.sliderGenValue.ToString();
         }
 
 
@@ -259,7 +274,7 @@ namespace SampleLibraryUI.Controls
                     //                   myBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     //                   BindingOperations.SetBinding(newSlider, Slider.ValueProperty, myBinding);
 
-                    newSlider.ValueChanged += Slider_ValueChanged;
+ //                  newSlider.ValueChanged += Slider_ValueChanged;
 
 
 
@@ -304,6 +319,16 @@ namespace SampleLibraryUI.Controls
             StringReader stringReader = new StringReader(shapestring);
             XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
             TextBox DeepCopyobject = (TextBox)XamlReader.Load(xmlTextReader);
+            return DeepCopyobject;
+
+        }
+
+        public static StackPanel StackPanelDeepCopy(StackPanel element)
+        {
+            string shapestring = XamlWriter.Save(element);
+            StringReader stringReader = new StringReader(shapestring);
+            XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
+            StackPanel DeepCopyobject = (StackPanel)XamlReader.Load(xmlTextReader);
             return DeepCopyobject;
 
         }

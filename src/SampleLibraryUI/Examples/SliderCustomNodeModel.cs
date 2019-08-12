@@ -70,7 +70,7 @@ namespace SampleLibraryUI.Examples
 
         public static double sliderValue;
         public static List<double> sliderValueList = new List<double>();
-        private int countValue = 2;
+        private int countValue = 1;
         public static int newCount;
         public static int slidersCountChange;
 
@@ -87,6 +87,18 @@ namespace SampleLibraryUI.Examples
             {
                 sliderValue = value;
                 RaisePropertyChanged("SliderValue");
+
+
+                if(sliderValueList.Count == 0)
+                {
+                    sliderValueList.Add(0);
+
+                }
+                if (sliderValueList.Count > 0)
+                {
+                    sliderValueList[0] = sliderValue;
+                }
+
                 OnNodeModified();
             }
         }
@@ -109,9 +121,12 @@ namespace SampleLibraryUI.Examples
                 }
                 if (slidersCountChange < 0)
                 {
-                    SliderControl.DeleteSliders(this, oldCount, CountValue);
+                    if (oldCount > 1)
+                    {
+                        SliderControl.DeleteSliders(this, oldCount, CountValue);
+
+                    }
                 }
-                //                SliderControl.AddSlider(this);
 
                 OnNodeModified();
             }
@@ -160,7 +175,7 @@ namespace SampleLibraryUI.Examples
             ArgumentLacing = LacingStrategy.Disabled;
 
             // Set initial slider value.
-            sliderValue = 5555;
+            sliderValue = 10;
 
             //set initial count value;
             countValue = 1;
@@ -266,7 +281,7 @@ namespace SampleLibraryUI.Examples
    
     public class SliderINotifyModel : INotifyPropertyChanged
     {
-        private double sliderGenValue;
+        public double sliderGenValue;
         private int newCount = SliderCustomNodeModel.newCount;
         public SliderCustomNodeModel sliderCusModel;
         public int index;

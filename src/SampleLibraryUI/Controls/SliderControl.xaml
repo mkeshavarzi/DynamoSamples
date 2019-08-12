@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             Height="460.809" Width="208.572">
+             Height="254.409" Width="208.572">
     <Grid Name="CustomUIGrid" Margin="0,0,-0.2,-95.2">
         <StackPanel Margin="0,0,-3.2,-267.2">
             <StackPanel x:Name="countStackPanel"  Orientation="Horizontal">
@@ -31,23 +31,26 @@
                     </InlineUIContainer></TextBlock>
                 <TextBox x:Name="stepTextBox" HorizontalAlignment="Left" Height="16" Margin="0,0,0,0" TextWrapping="Wrap" Text="1" Width="142"/>
             </StackPanel>
-            <StackPanel  Orientation="Horizontal"/>
             <StackPanel Orientation="Horizontal"/>
-            <StackPanel x:Name="SliderStackPanel_Copy" Orientation="Horizontal">
-                <TextBox x:Name="textBoxDebug" Height="19" TextWrapping="Wrap" Text="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="5,0,10,0" Width="53"/>
+            <ScrollViewer HorizontalAlignment="Left" Height="176" VerticalAlignment="Top" Width="212" Margin="0,10,0,0" >
+                <StackPanel x:Name="SliderPanel" Width="212">
+                    <StackPanel x:Name="SliderStackPanel_Copy" Orientation="Horizontal" Height="39" Margin="0,0,19,0">
+                        <TextBox x:Name="textBoxDebug" Height="19" TextWrapping="Wrap" Text="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="5,0,10,0" Width="53"/>
 
-                <Slider x:Name="sliderDebug" Margin="0,10,0,0" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="None" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="28" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="136" BorderThickness="0" BorderBrush="#00000000">
-                    <Slider.Background>
-                        <ImageBrush/>
-                    </Slider.Background>
-                    <Slider.ToolTip>
-                        <TextBlock Text="Slide this to crank up the awesome."/>
-                    </Slider.ToolTip>
-                </Slider>
+                        <Slider x:Name="sliderDebug" Margin="0,11,0,0.2" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="None" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="28" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="122" BorderThickness="0" BorderBrush="#00000000">
+                            <Slider.Background>
+                                <ImageBrush/>
+                            </Slider.Background>
+                            <Slider.ToolTip>
+                                <TextBlock Text="Slide this to crank up the awesome."/>
+                            </Slider.ToolTip>
+                        </Slider>
 
-            </StackPanel>
-            <StackPanel x:Name="SliderStackPanel_AllSliders" Height="264"/>
-            <StackPanel x:Name="SliderStackPanel" Height="1"/>
+                    </StackPanel>
+                    <StackPanel x:Name="SliderStackPanel_AllSliders" Height="6"/>
+                    <StackPanel x:Name="SliderStackPanel" Height="8" Width="212"/>
+                </StackPanel>
+            </ScrollViewer>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -150,6 +150,8 @@ namespace SampleLibraryUI.Controls
                 AddTextBox(datModel, i, newDeepCopySP);
                 AddSlider(datModel, i, newDeepCopySP);
 
+                stackPanel_AllSlidersStatic.Height += newDeepCopySP.Height;
+
             }
 
         }

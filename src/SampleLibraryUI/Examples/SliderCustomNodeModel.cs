@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml;
+using System.Windows.Controls;
 
 
 namespace SampleLibraryUI.Examples
@@ -281,6 +282,9 @@ namespace SampleLibraryUI.Examples
         private int newCount = SliderCustomNodeModel.newCount;
         public SliderCustomNodeModel sliderCusModel;
         public int index;
+
+        public Slider sliderAssigned;
+        public TextBox textBoxAssigned;
 
         public SliderINotifyModel() { }
 

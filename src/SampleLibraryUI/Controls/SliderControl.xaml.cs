@@ -147,7 +147,7 @@ namespace SampleLibraryUI.Controls
                 newDeepCopySP.Children.Clear();
                 stackPanel_AllSlidersStatic.Children.Add(newDeepCopySP);
 
-                AddTextBox(datModel, i, newDeepCopySP);
+//                AddTextBox(datModel, i, newDeepCopySP);
                 AddSlider(datModel, i, newDeepCopySP);
 
                 stackPanel_AllSlidersStatic.Height += newDeepCopySP.Height;
@@ -171,19 +171,25 @@ namespace SampleLibraryUI.Controls
 
             SliderCustomNodeModel.sliderValueList.Add(0);
 
+            TextBox newTextBoxDeepCopy = TextBoxDeepCopy(textBoxDebugStatic);
+            sliderSP.Children.Add(newTextBoxDeepCopy);
 
             Slider newDeepCopy = SliderDeepCopy(sliderDebugStatic);
             sliderSP.Children.Add(newDeepCopy);
 
-            //double movedSlider = new double();
+
+
             SliderINotifyModel newDataObject = new SliderINotifyModel();
             newDataObject.sliderCusModel = datModel as SliderCustomNodeModel;
             newDataObject.index = index;
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
             newBinding.Mode = BindingMode.TwoWay;
+//           newBinding.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
             // Bind the new data source to the myText TextBlock control's Text dependency property.
             newDeepCopy.SetBinding(Slider.ValueProperty, newBinding);
+            newTextBoxDeepCopy.SetBinding(TextBox.TextProperty, newBinding);
+
         }
 
         public static void DeleteSlider (NodeModel datModel, int index)
@@ -208,7 +214,6 @@ namespace SampleLibraryUI.Controls
             newBinding.UpdateSourceTrigger =  UpdateSourceTrigger.LostFocus;
             // Bind the new data source to the myText TextBlock control's Text dependency property.
             newTextBoxDeepCopy.SetBinding(TextBox.TextProperty, newBinding);
-            newTextBoxDeepCopy.Text = newDataObject.sliderGenValue.ToString();
         }
 
 

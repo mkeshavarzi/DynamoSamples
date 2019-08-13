@@ -69,15 +69,18 @@ namespace SampleLibraryUI.Examples
     {
         #region private members
 
-        public static double sliderValue;
+        public static double sliderValue = 1;
         public static List<double> sliderValueList = new List<double>();
         private int countValue = 1;
         public static int newCount;
         public static int slidersCountChange;
+        public SliderControl multiSliderControl = new SliderControl();
 
         #endregion
 
         public static ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
+
+        
 
         #region properties
 
@@ -118,11 +121,11 @@ namespace SampleLibraryUI.Examples
                 RaisePropertyChanged("CountValue");
                 if ((slidersCountChange > 0)&& (oldCount > 0))
                 {
-                    SliderControl.AdditionalSliders(this, oldCount, CountValue);
+                    multiSliderControl.AdditionalSliders(this, oldCount, CountValue);
                 }
                 if ((slidersCountChange < 0)&& (oldCount > 1))
                 {
-                        SliderControl.DeleteSliders(this, oldCount, CountValue);
+                    multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl);
                 }
 
                 OnNodeModified();
@@ -352,15 +355,13 @@ namespace SampleLibraryUI.Examples
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
             var sliderControl = new SliderControl();
-            var sliderControl2 = new SliderControl();
             nodeView.inputGrid.Children.Add(sliderControl);
-            nodeView.inputGrid.Children.Add(sliderControl2);
 
             // Set the data context for our control to be the node model.
             // Properties in this class which are data bound will raise 
             // property change notifications which will update the UI.
             sliderControl.DataContext = model;
-            sliderControl2.DataContext = model;
+
         }
 
         /// <summary>

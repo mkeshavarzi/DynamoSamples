@@ -45,15 +45,15 @@ namespace SampleLibraryUI.Controls
         {
             InitializeComponent();
 
-            sliderDebugStatic = StaticSlider(sliderDebugStatic, sliderDebug);
-            textBoxDebugStatic = StaticTextBox(textBoxDebugStatic, textBoxDebug);
+ //           sliderDebugStatic = StaticSlider(sliderDebugStatic, sliderDebug);
+ //           textBoxDebugStatic = StaticTextBox(textBoxDebugStatic, textBoxDebug);
 
 
-            stackPanelStatic = StaticStackPanel(stackPanelStatic, SliderStackPanel_Copy);
-            stackPanel_AllSlidersStatic = StaticStackPanel(stackPanel_AllSlidersStatic, SliderStackPanel_AllSliders);
+ //           stackPanelStatic = StaticStackPanel(stackPanelStatic, SliderStackPanel_Copy);
+ //           stackPanel_AllSlidersStatic = StaticStackPanel(stackPanel_AllSlidersStatic, SliderStackPanel_AllSliders);
 
-            scrollStatic = StaticScroll(scrollStatic, SliderScroll);
-            userControlStatic = StaticUserControl(userControlStatic, MultiSliderUserControl);          
+ //           scrollStatic = StaticScroll(scrollStatic, SliderScroll);
+ //           userControlStatic = StaticUserControl(userControlStatic, MultiSliderUserControl);          
 
  //           SliderStackPanel_Copy.Visibility = Visibility.Hidden;
  //           stackPanelStatic.Visibility = Visibility.Visible;
@@ -175,8 +175,6 @@ namespace SampleLibraryUI.Controls
         public  void AddSlider(NodeModel datModel, int index, StackPanel sliderSP, SliderControl sliderControl)
         {
 
-
-            stackPanelStatic.Visibility = Visibility.Visible;
 
             SliderCustomNodeModel.sliderValueList.Add(0);
 

@@ -74,13 +74,26 @@ namespace SampleLibraryUI.Examples
         private int countValue = 1;
         public static int newCount;
         public static int slidersCountChange;
-        public SliderControl multiSliderControl = new SliderControl();
+        public  static SliderControl multiSliderControl = new SliderControl();
+        private ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
 
         #endregion
 
-        public static ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
 
-        
+
+        public ObservableCollection<double> SiderValueCollection
+        {
+            get { return sliderValueCollection; }
+            set
+            {
+                sliderValueCollection = value;
+
+                foreach (var item in sliderValueCollection)
+//                    InitEnumItem(item);
+
+                RaisePropertyChanged("EnumItems");
+            }
+        }
 
         #region properties
 
@@ -107,7 +120,11 @@ namespace SampleLibraryUI.Examples
             }
         }
 
+        public double MinValue;
 
+        public double MaxValue;
+
+        public double StepValue;
 
         public int CountValue
         {
@@ -354,13 +371,16 @@ namespace SampleLibraryUI.Examples
 
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
-            var sliderControl = new SliderControl();
-            nodeView.inputGrid.Children.Add(sliderControl);
+ //                       SliderCustomNodeModel sliderModel = new SliderCustomNodeModel();
+ //                       SliderControl sliderControl = sliderModel.multiSliderControl;
+
+//            var sliderControl = new SliderControl();
+            nodeView.inputGrid.Children.Add(SliderCustomNodeModel.multiSliderControl);
 
             // Set the data context for our control to be the node model.
             // Properties in this class which are data bound will raise 
             // property change notifications which will update the UI.
-            sliderControl.DataContext = model;
+            SliderCustomNodeModel.multiSliderControl.DataContext = model;
 
         }
 

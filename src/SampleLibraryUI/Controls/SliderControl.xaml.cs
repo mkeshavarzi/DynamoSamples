@@ -38,7 +38,7 @@ namespace SampleLibraryUI.Controls
         private static TextBox textBoxDebugStatic;
 
 
-        public static List<SliderINotifyModel> sliderINotifyModelList = new List<SliderINotifyModel>();
+ //       public static List<SliderINotifyModel> sliderINotifyModelList = new List<SliderINotifyModel>();
 
 
         public SliderControl()
@@ -49,14 +49,14 @@ namespace SampleLibraryUI.Controls
  //           textBoxDebugStatic = StaticTextBox(textBoxDebugStatic, textBoxDebug);
 
 
- //           stackPanelStatic = StaticStackPanel(stackPanelStatic, SliderStackPanel_Copy);
- //           stackPanel_AllSlidersStatic = StaticStackPanel(stackPanel_AllSlidersStatic, SliderStackPanel_AllSliders);
+            stackPanelStatic = StaticStackPanel(stackPanelStatic, SliderStackPanel_Copy);
+            //           stackPanel_AllSlidersStatic = StaticStackPanel(stackPanel_AllSlidersStatic, SliderStackPanel_AllSliders);
 
- //           scrollStatic = StaticScroll(scrollStatic, SliderScroll);
- //           userControlStatic = StaticUserControl(userControlStatic, MultiSliderUserControl);          
+            //           scrollStatic = StaticScroll(scrollStatic, SliderScroll);
+            //           userControlStatic = StaticUserControl(userControlStatic, MultiSliderUserControl);          
 
- //           SliderStackPanel_Copy.Visibility = Visibility.Hidden;
- //           stackPanelStatic.Visibility = Visibility.Visible;
+            //           SliderStackPanel_Copy.Visibility = Visibility.Hidden;
+            //           stackPanelStatic.Visibility = Visibility.Visible;
 
         }
 
@@ -131,9 +131,10 @@ namespace SampleLibraryUI.Controls
             return staticUserControl;
         }
 
-        public void AdditionalSliders(NodeModel datModel, int oldCount, int newCount)
+        public void  AdditionalSliders(NodeModel datModel, int oldCount, int newCount)
         {
 
+            
             SliderStackPanel_Copy.Visibility = Visibility.Visible;
 
             for (int i = oldCount; i<newCount; i++)
@@ -150,7 +151,7 @@ namespace SampleLibraryUI.Controls
 //              AddTextBox(datModel, i, newDeepCopySP);
                 AddSlider(datModel, i, newDeepCopySP, this);
 
-                stackPanel_AllSlidersStatic.Children.Add(newDeepCopySP);
+                SliderStackPanel_AllSliders.Children.Add(newDeepCopySP);
 
 
             }
@@ -163,7 +164,7 @@ namespace SampleLibraryUI.Controls
             for (int i = (oldCount-2); i > (newCount-2); i--)
             {
                 DeleteSlider(datModel, i);
-                stackPanel_AllSlidersStatic.Height -= SliderStackPanel_Copy.Height;
+                SliderStackPanel_AllSliders.Height -= SliderStackPanel_Copy.Height;
                 SliderScroll.Height -= SliderStackPanel_Copy.Height;
                 MultiSliderUserControl.Height -= SliderStackPanel_Copy.Height;  
 
@@ -197,17 +198,19 @@ namespace SampleLibraryUI.Controls
 
             newDataObject.sliderAssigned = newDeepCopy;
             newDataObject.textBoxAssigned = newTextBoxDeepCopy;
-            sliderINotifyModelList.Add(newDataObject);
+//            sliderINotifyModelList.Add(newDataObject);
 
-            stackPanel_AllSlidersStatic.Height += SliderStackPanel_Copy.Height;
+//            stackPanel_AllSlidersStatic.Height += SliderStackPanel_Copy.Height;
+
+            SliderStackPanel_AllSliders.Height += SliderStackPanel_Copy.Height;
             SliderScroll.Height += SliderStackPanel_Copy.Height;
             MultiSliderUserControl.Height += SliderStackPanel_Copy.Height;
 
         }
 
-        public static void DeleteSlider (NodeModel datModel, int index)
+        public void DeleteSlider (NodeModel datModel, int index)
         {
-            stackPanel_AllSlidersStatic.Children.RemoveAt(index);
+            SliderStackPanel_AllSliders.Children.RemoveAt(index);
             SliderCustomNodeModel.sliderValueList.RemoveAt(index);
         }
 

@@ -167,8 +167,6 @@ namespace SampleLibraryUI.Controls
                 SliderStackPanel_AllSliders.Height -= SliderStackPanel_Copy.Height;
                 SliderScroll.Height -= SliderStackPanel_Copy.Height;
                 MultiSliderUserControl.Height -= SliderStackPanel_Copy.Height;  
-
-
             }
 
         }
@@ -177,7 +175,8 @@ namespace SampleLibraryUI.Controls
         {
 
 
-            SliderCustomNodeModel.sliderValueList.Add(0);
+            Double newSliderValue = 0;
+   
 
             TextBox newTextBoxDeepCopy = TextBoxDeepCopy(sliderControl.textBoxDebug);
             sliderSP.Children.Add(newTextBoxDeepCopy);
@@ -187,6 +186,14 @@ namespace SampleLibraryUI.Controls
 
             SliderINotifyModel newDataObject = new SliderINotifyModel();
             newDataObject.sliderCusModel = datModel as SliderCustomNodeModel;
+
+
+            if(newDataObject.sliderCusModel.SiderValueCollection.Count <= index+1)
+            {
+                newDataObject.sliderCusModel.SiderValueCollection.Add(newSliderValue);
+            }
+
+            newSliderValue = newDataObject.sliderCusModel.SiderValueCollection[index];
             newDataObject.index = index;
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
@@ -198,7 +205,14 @@ namespace SampleLibraryUI.Controls
 
             newDataObject.sliderAssigned = newDeepCopy;
             newDataObject.textBoxAssigned = newTextBoxDeepCopy;
-//            sliderINotifyModelList.Add(newDataObject);
+
+            SliderCustomNodeModel.sliderValueList.Add(newSliderValue);
+            newTextBoxDeepCopy.Text = newSliderValue.ToString();
+            newDeepCopy.Value = newSliderValue;
+
+
+
+            SliderCustomNodeModel.INotifySliderModels.Add(newDataObject);
 
 //            stackPanel_AllSlidersStatic.Height += SliderStackPanel_Copy.Height;
 
@@ -212,6 +226,7 @@ namespace SampleLibraryUI.Controls
         {
             SliderStackPanel_AllSliders.Children.RemoveAt(index);
             SliderCustomNodeModel.sliderValueList.RemoveAt(index);
+
         }
 
         public static void AddTextBox(NodeModel datModel, int index, StackPanel sliderSP)// can be commented out

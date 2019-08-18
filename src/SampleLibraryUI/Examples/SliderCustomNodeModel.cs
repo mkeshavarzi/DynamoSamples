@@ -75,10 +75,16 @@ namespace SampleLibraryUI.Examples
         public static int newCount;
         public static int slidersCountChange;
         public  static SliderControl multiSliderControl = new SliderControl();
-        private ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
+        public ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
+        public static List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
 
         #endregion
 
+
+
+
+
+        #region properties
 
 
         public ObservableCollection<double> SiderValueCollection
@@ -89,13 +95,11 @@ namespace SampleLibraryUI.Examples
                 sliderValueCollection = value;
 
                 foreach (var item in sliderValueCollection)
-//                    InitEnumItem(item);
+                    //                    InitEnumItem(item);
 
-                RaisePropertyChanged("EnumItems");
+                    RaisePropertyChanged("EnumItems");
             }
         }
-
-        #region properties
 
         public double SliderValue
         {
@@ -109,11 +113,13 @@ namespace SampleLibraryUI.Examples
                 if(sliderValueList.Count == 0)
                 {
                     sliderValueList.Add(0);
+                    sliderValueCollection.Add(0);
 
                 }
                 if (sliderValueList.Count > 0)
                 {
                     sliderValueList[0] = sliderValue;
+                    sliderValueCollection[0] = sliderValue;
                 }
 
                 OnNodeModified();
@@ -125,6 +131,9 @@ namespace SampleLibraryUI.Examples
         public double MaxValue;
 
         public double StepValue;
+
+
+
 
         public int CountValue
         {
@@ -145,15 +154,18 @@ namespace SampleLibraryUI.Examples
                     multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl);
                 }
 
+
                 OnNodeModified();
             }
         }
+
+
 
         public void NodeModified()
         {
 
             OnNodeModified();
-            sliderValueCollection.CollectionChanged += SliderItems_CollectionChanged;
+ //           sliderValueCollection.CollectionChanged += SliderItems_CollectionChanged;
 
         }
 
@@ -322,12 +334,14 @@ namespace SampleLibraryUI.Examples
                 if (SliderCustomNodeModel.sliderValueList.Count < (index+1))
                 {
                     SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
+                    sliderCusModel.SiderValueCollection.Add(sliderGenValue);
                 }
 
 
                 if (SliderCustomNodeModel.sliderValueList.Count >= 2)
                 {
                     SliderCustomNodeModel.sliderValueList[index] = sliderGenValue;
+                    sliderCusModel.SiderValueCollection[index] = sliderGenValue;
                 }
 
                 sliderCusModel.OnNodeModified(true);

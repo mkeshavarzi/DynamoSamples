@@ -175,7 +175,7 @@ namespace SampleLibraryUI.Controls
         {
 
 
-            Double newSliderValue = 0;
+            Double newSliderValue = 1;
    
 
             TextBox newTextBoxDeepCopy = TextBoxDeepCopy(sliderControl.textBoxDebug);
@@ -188,7 +188,7 @@ namespace SampleLibraryUI.Controls
             newDataObject.sliderCusModel = datModel as SliderCustomNodeModel;
 
 
-            if(newDataObject.sliderCusModel.SiderValueCollection.Count <= index+1)
+            if(newDataObject.sliderCusModel.SiderValueCollection.Count < index+1)
             {
                 newDataObject.sliderCusModel.SiderValueCollection.Add(newSliderValue);
             }
@@ -225,7 +225,8 @@ namespace SampleLibraryUI.Controls
         public void DeleteSlider (NodeModel datModel, int index)
         {
             SliderStackPanel_AllSliders.Children.RemoveAt(index);
-            SliderCustomNodeModel.sliderValueList.RemoveAt(index);
+            SliderCustomNodeModel.sliderValueList.RemoveAt(index+1);
+            SliderCustomNodeModel.INotifySliderModels[index].sliderCusModel.SiderValueCollection.RemoveAt(index+1);
 
         }
 

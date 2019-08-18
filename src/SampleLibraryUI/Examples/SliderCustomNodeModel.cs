@@ -113,13 +113,15 @@ namespace SampleLibraryUI.Examples
                 if(sliderValueList.Count == 0)
                 {
                     sliderValueList.Add(0);
-                    sliderValueCollection.Add(0);
-
                 }
                 if (sliderValueList.Count > 0)
                 {
                     sliderValueList[0] = sliderValue;
                     sliderValueCollection[0] = sliderValue;
+                }
+                if(sliderValueCollection.Count == 0)
+                {
+                    sliderValueCollection.Add(0);
                 }
 
                 OnNodeModified();

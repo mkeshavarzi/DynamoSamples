@@ -80,12 +80,7 @@ namespace SampleLibraryUI.Examples
 
         #endregion
 
-
-
-
-
         #region properties
-
 
         public ObservableCollection<double> SiderValueCollection
         {
@@ -93,11 +88,6 @@ namespace SampleLibraryUI.Examples
             set
             {
                 sliderValueCollection = value;
-
-                foreach (var item in sliderValueCollection)
-                    //                    InitEnumItem(item);
-
-                    RaisePropertyChanged("EnumItems");
             }
         }
 
@@ -108,7 +98,6 @@ namespace SampleLibraryUI.Examples
             {
                 sliderValue = value;
                 RaisePropertyChanged("SliderValue");
-
 
                 if(sliderValueList.Count == 0)
                 {
@@ -134,9 +123,6 @@ namespace SampleLibraryUI.Examples
 
         public double StepValue;
 
-
-
-
         public int CountValue
         {
             get { return countValue; }
@@ -155,22 +141,9 @@ namespace SampleLibraryUI.Examples
                 {
                     multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl);
                 }
-
-
                 OnNodeModified();
             }
         }
-
-
-
-        public void NodeModified()
-        {
-
-            OnNodeModified();
- //           sliderValueCollection.CollectionChanged += SliderItems_CollectionChanged;
-
-        }
-
 
         #endregion
 
@@ -316,21 +289,15 @@ namespace SampleLibraryUI.Examples
         private int newCount = SliderCustomNodeModel.newCount;
         public SliderCustomNodeModel sliderCusModel;
         public int index;
-
         public Slider sliderAssigned;
         public TextBox textBoxAssigned;
-
         public SliderINotifyModel() { }
-
         public double MovedSliderProp
         {
             get { return sliderGenValue; }
             set
             {
                 sliderGenValue = value;
-
- //              OnPropertyChanged("MovedSliderProp_" + 0.ToString());
- //               OnPropertyChanged("MovedSliderProp_" + 1.ToString());
                 OnPropertyChanged("MovedSliderProp");
 
                 if (SliderCustomNodeModel.sliderValueList.Count < (index+1))
@@ -339,20 +306,17 @@ namespace SampleLibraryUI.Examples
                     sliderCusModel.SiderValueCollection.Add(sliderGenValue);
                 }
 
-
                 if (SliderCustomNodeModel.sliderValueList.Count >= 2)
                 {
                     SliderCustomNodeModel.sliderValueList[index] = sliderGenValue;
                     sliderCusModel.SiderValueCollection[index] = sliderGenValue;
                 }
 
-                sliderCusModel.OnNodeModified(true);
-                
+                sliderCusModel.OnNodeModified(true);                
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyChanged(string info)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

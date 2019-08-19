@@ -165,8 +165,17 @@ namespace SampleLibraryUI.Controls
             {
                 DeleteSlider(datModel, i);
                 SliderStackPanel_AllSliders.Height -= SliderStackPanel_Copy.Height;
-                SliderScroll.Height -= SliderStackPanel_Copy.Height;
-                MultiSliderUserControl.Height -= SliderStackPanel_Copy.Height;  
+                SliderPanel.Height -= SliderStackPanel_Copy.Height;
+
+
+                if (i < 3)
+                {
+                    MultiSliderUserControl.Height -= SliderStackPanel_Copy.Height;
+                    SliderScroll.Height -= SliderStackPanel_Copy.Height;
+                }
+
+
+
             }
 
         }
@@ -217,8 +226,14 @@ namespace SampleLibraryUI.Controls
 //            stackPanel_AllSlidersStatic.Height += SliderStackPanel_Copy.Height;
 
             SliderStackPanel_AllSliders.Height += SliderStackPanel_Copy.Height;
-            SliderScroll.Height += SliderStackPanel_Copy.Height;
-            MultiSliderUserControl.Height += SliderStackPanel_Copy.Height;
+            SliderPanel.Height += SliderStackPanel_Copy.Height;
+
+
+            if (index < 4)
+            {
+                MultiSliderUserControl.Height += SliderStackPanel_Copy.Height;
+                SliderScroll.Height += SliderStackPanel_Copy.Height;
+            }
 
         }
 

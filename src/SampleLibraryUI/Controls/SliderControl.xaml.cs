@@ -72,24 +72,24 @@ namespace SampleLibraryUI.Controls
             return staticUserControl;
         }
 
-        public void  AdditionalSliders(NodeModel datModel, int oldCount, int newCount)
+        public void  AdditionalSliders(NodeModel datModel, int oldCount, int newCount, SliderControl sliderControl, SliderCustomNodeModel sliderCustomModel)
         {            
             SliderStackPanel_Copy.Visibility = Visibility.Visible;
             for (int i = oldCount; i<newCount; i++)
             {
                 StackPanel newDeepCopySP = StackPanelDeepCopy(SliderStackPanel_Copy);
                 newDeepCopySP.Children.Clear();
-                AddSlider(datModel, i, newDeepCopySP, this);
+                AddSlider(datModel, i, newDeepCopySP, sliderControl, sliderCustomModel);
                 SliderStackPanel_AllSliders.Children.Add(newDeepCopySP);
             }
 
         }
 
-        public void DeleteSliders(NodeModel datModel, int oldCount, int newCount, SliderControl sliderControl)
+        public void DeleteSliders(NodeModel datModel, int oldCount, int newCount, SliderControl sliderControl, SliderCustomNodeModel sliderCusModel)
         {
             for (int i = (oldCount-2); i > (newCount-2); i--)
             {
-                DeleteSlider(datModel, i);
+                DeleteSlider(sliderCusModel, i);
                 SliderStackPanel_AllSliders.Height -= SliderStackPanel_Copy.Height;
                 SliderPanel.Height -= SliderStackPanel_Copy.Height;
 
@@ -102,7 +102,7 @@ namespace SampleLibraryUI.Controls
 
         }
 
-        public  void AddSlider(NodeModel datModel, int index, StackPanel sliderSP, SliderControl sliderControl)
+        public  void AddSlider(NodeModel datModel, int index, StackPanel sliderSP, SliderControl sliderControl, SliderCustomNodeModel sliderCusNodeModel)
         {
             Double newSliderValue = 1;
             TextBox newTextBoxDeepCopy = TextBoxDeepCopy(sliderControl.textBoxDebug);
@@ -121,6 +121,8 @@ namespace SampleLibraryUI.Controls
 
             newSliderValue = newDataObject.sliderCusModel.SiderValueCollection[index];
             newDataObject.index = index;
+            newDataObject.sliderCusModel = sliderCusNodeModel;
+            newDataObject.newCount = sliderCusNodeModel.newCount;
             Binding newBinding = new Binding("MovedSliderProp");
             newBinding.Source = newDataObject;
             newBinding.Mode = BindingMode.TwoWay;
@@ -130,11 +132,11 @@ namespace SampleLibraryUI.Controls
             newDataObject.sliderAssigned = newDeepCopy;
             newDataObject.textBoxAssigned = newTextBoxDeepCopy;
 
-            SliderCustomNodeModel.sliderValueList.Add(newSliderValue);
+            sliderCusNodeModel.sliderValueList.Add(newSliderValue);
             newTextBoxDeepCopy.Text = newSliderValue.ToString();
             newDeepCopy.Value = newSliderValue;
 
-            SliderCustomNodeModel.INotifySliderModels.Add(newDataObject);
+            sliderCusNodeModel.INotifySliderModels.Add(newDataObject);
 
             SliderStackPanel_AllSliders.Height += SliderStackPanel_Copy.Height;
             SliderPanel.Height += SliderStackPanel_Copy.Height;
@@ -146,11 +148,11 @@ namespace SampleLibraryUI.Controls
             }
         }
 
-        public void DeleteSlider (NodeModel datModel, int index)
+        public void DeleteSlider (SliderCustomNodeModel sliderCusModel, int index)
         {
             SliderStackPanel_AllSliders.Children.RemoveAt(index);
-            SliderCustomNodeModel.sliderValueList.RemoveAt(index+1);
-            SliderCustomNodeModel.INotifySliderModels[index].sliderCusModel.SiderValueCollection.RemoveAt(index+1);
+            sliderCusModel.sliderValueList.RemoveAt(index+1);
+            sliderCusModel.INotifySliderModels[index].sliderCusModel.SiderValueCollection.RemoveAt(index+1);
 
         }
 

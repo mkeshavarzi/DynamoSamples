@@ -69,14 +69,14 @@ namespace SampleLibraryUI.Examples
     {
         #region private members
 
-        public static double sliderValue = 1;
-        public static List<double> sliderValueList = new List<double>();
+        public double sliderValue = 1;
+        public List<double> sliderValueList = new List<double>();
         private int countValue = 1;
-        public static int newCount;
+        public int newCount;
         public static int slidersCountChange;
-        public  static SliderControl multiSliderControl = new SliderControl();
+        public SliderControl multiSliderControl = new SliderControl();
         public ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
-        public static List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
+        public List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace SampleLibraryUI.Examples
                 }
                 if(sliderValueCollection.Count == 0)
                 {
-                    sliderValueCollection.Add(0);
+                    sliderValueCollection.Add(sliderValue);
                 }
 
                 OnNodeModified();
@@ -135,11 +135,11 @@ namespace SampleLibraryUI.Examples
                 RaisePropertyChanged("CountValue");
                 if ((slidersCountChange > 0)&& (oldCount > 0))
                 {
-                    multiSliderControl.AdditionalSliders(this, oldCount, CountValue);
+                    multiSliderControl.AdditionalSliders(this, oldCount, CountValue, multiSliderControl, this);
                 }
                 if ((slidersCountChange < 0)&& (oldCount > 1))
                 {
-                    multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl);
+                    multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl, this);
                 }
                 OnNodeModified();
             }
@@ -178,11 +178,13 @@ namespace SampleLibraryUI.Examples
             // support argument lacing, you can set this to LacingStrategy.Disabled.
             ArgumentLacing = LacingStrategy.Disabled;
 
-            // Set initial slider value.
-            sliderValue = 10;
-
-            //set initial count value;
+            sliderValue = 1;
             countValue = 1;
+
+            if (sliderValueCollection.Count == 0)
+            {
+                sliderValueCollection.Add(sliderValue);
+            }
         }
 
         // Starting with Dynamo v2.0 you must add Json constructors for all nodeModel
@@ -286,12 +288,13 @@ namespace SampleLibraryUI.Examples
     public class SliderINotifyModel : INotifyPropertyChanged
     {
         public double sliderGenValue;
-        private int newCount = SliderCustomNodeModel.newCount;
         public SliderCustomNodeModel sliderCusModel;
         public int index;
         public Slider sliderAssigned;
         public TextBox textBoxAssigned;
         public SliderINotifyModel() { }
+        public int newCount;
+
         public double MovedSliderProp
         {
             get { return sliderGenValue; }
@@ -300,15 +303,15 @@ namespace SampleLibraryUI.Examples
                 sliderGenValue = value;
                 OnPropertyChanged("MovedSliderProp");
 
-                if (SliderCustomNodeModel.sliderValueList.Count < (index+1))
+                if (sliderCusModel.sliderValueList.Count < (index+1))
                 {
-                    SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
+                    sliderCusModel.sliderValueList.Add(sliderGenValue);
                     sliderCusModel.SiderValueCollection.Add(sliderGenValue);
                 }
 
-                if (SliderCustomNodeModel.sliderValueList.Count >= 2)
+                if (sliderCusModel.sliderValueList.Count >= 2)
                 {
-                    SliderCustomNodeModel.sliderValueList[index] = sliderGenValue;
+                    sliderCusModel.sliderValueList[index] = sliderGenValue;
                     sliderCusModel.SiderValueCollection[index] = sliderGenValue;
                 }
 
@@ -325,6 +328,7 @@ namespace SampleLibraryUI.Examples
                 handler(this, new PropertyChangedEventArgs(info));
             }
         }
+
     }
 
 
@@ -341,7 +345,8 @@ namespace SampleLibraryUI.Examples
         /// properties on this node as the DataContext.
         /// </summary>
         /// <param name="model">The NodeModel representing the node's core logic.</param>
-        /// <param name="nodeView">The NodeView representing the node in the graph.</param>
+        /// <param name="nodeView">The NodeView representing the node in the graph.</param> 
+
         public void CustomizeView(SliderCustomNodeModel model, NodeView nodeView)
         {
             // The view variable is a reference to the node's view.
@@ -351,16 +356,16 @@ namespace SampleLibraryUI.Examples
 
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
- //                       SliderCustomNodeModel sliderModel = new SliderCustomNodeModel();
- //                       SliderControl sliderControl = sliderModel.multiSliderControl;
-
-//            var sliderControl = new SliderControl();
-            nodeView.inputGrid.Children.Add(SliderCustomNodeModel.multiSliderControl);
+            //                       SliderCustomNodeModel sliderModel = new SliderCustomNodeModel();
+            //                       SliderControl sliderControl = sliderModel.multiSliderControl;
+            var sliderControl = new SliderControl();
+//            sliderControl = model.multiSliderControl;
+            nodeView.inputGrid.Children.Add(sliderControl);
 
             // Set the data context for our control to be the node model.
             // Properties in this class which are data bound will raise 
             // property change notifications which will update the UI.
-            SliderCustomNodeModel.multiSliderControl.DataContext = model;
+            sliderControl.DataContext = model;
 
         }
 

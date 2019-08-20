@@ -68,20 +68,35 @@ namespace SampleLibraryUI.Examples
     public class SliderCustomNodeModel : NodeModel
     {
         #region private members
-
+        [JsonIgnore]
         public double sliderValue = 1;
+
+        [JsonIgnore]
         public List<double> sliderValueList = new List<double>();
+
+        [JsonIgnore]
         private int countValue = 1;
+
+        [JsonIgnore]
         public int newCount;
+
+        [JsonIgnore]
         public int slidersCountChange;
+
+        [JsonIgnore]
         public SliderControl multiSliderControl = new SliderControl();
+
+   
         public ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
+
+        [JsonIgnore]
         public List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
 
         #endregion
 
         #region properties
 
+        [JsonIgnore]
         public ObservableCollection<double> SiderValueCollection
         {
             get { return sliderValueCollection; }
@@ -91,6 +106,7 @@ namespace SampleLibraryUI.Examples
             }
         }
 
+        [JsonIgnore]
         public double SliderValue
         {
             get { return sliderValue; }
@@ -117,10 +133,13 @@ namespace SampleLibraryUI.Examples
             }
         }
 
+        [JsonIgnore]
         public double MinValue;
 
+        [JsonIgnore]
         public double MaxValue;
 
+        [JsonIgnore]
         public double StepValue;
 
         public int CountValue
@@ -287,6 +306,7 @@ namespace SampleLibraryUI.Examples
    
     public class SliderINotifyModel : INotifyPropertyChanged
     {
+
         public double sliderGenValue;
         public SliderCustomNodeModel sliderCusModel;
         public int index;

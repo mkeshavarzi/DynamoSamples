@@ -1,0 +1,12 @@
+{"file_hash":null,
+"name":"Slider Pool",
+"version":"0.1.0",
+"description":"Slider pool for Dynamo and Refinery.",
+"group":"",
+"keywords":["dynamo","slider"],
+"dependencies":[],
+"license":"MIT",
+"contents":"",
+"engine_version":"2.0.0",
+"engine_metadata":"",
+"engine":"dynamo"}

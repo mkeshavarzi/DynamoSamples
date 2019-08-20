@@ -68,7 +68,7 @@ namespace SampleLibraryUI.Examples
     public class SliderCustomNodeModel : NodeModel
     {
         #region private members
-        [JsonIgnore]
+      
         public double sliderValue = 1;
 
         [JsonIgnore]
@@ -77,9 +77,9 @@ namespace SampleLibraryUI.Examples
         [JsonIgnore]
         private int countValue = 1;
 
-        private double stepValue = 1;
-        private double minValue = 0;
-        private double maxValue = 10;
+      private double stepValue;
+        private double minValue;
+        private double maxValue;
 
         [JsonIgnore]
         public int newCount;
@@ -110,31 +110,7 @@ namespace SampleLibraryUI.Examples
             }
         }
 
-        public double SliderValue
-        {
-            get { return sliderValue; }
-            set
-            {
-                sliderValue = value;
-                RaisePropertyChanged("SliderValue");
 
-                if(sliderValueList.Count == 0)
-                {
-                    sliderValueList.Add(0);
-                }
-                if (sliderValueList.Count > 0)
-                {
-                    sliderValueList[0] = sliderValue;
-                    sliderValueCollection[0] = sliderValue;
-                }
-                if(sliderValueCollection.Count == 0)
-                {
-                    sliderValueCollection.Add(sliderValue);
-                }
-
-                OnNodeModified();
-            }
-        }
 
 
         public double MinValue
@@ -196,6 +172,38 @@ namespace SampleLibraryUI.Examples
                     slider.sliderAssigned.TickFrequency = stepValue;
                 }
                 multiSliderControl.UpdateStep(stepValue);
+                OnNodeModified();
+            }
+        }
+
+        public double SliderValue
+        {
+            get { return sliderValue; }
+            set
+            {
+                sliderValue = value;
+
+                if (sliderValue > maxValue) sliderValue = maxValue;
+                if (sliderValue < minValue) sliderValue = minValue;
+
+
+                RaisePropertyChanged("SliderValue");
+
+                if (sliderValueList.Count == 0)
+                {
+                    sliderValueList.Add(0);
+                }
+                if (sliderValueList.Count > 0)
+                {
+                    sliderValueList[0] = sliderValue;
+                    sliderValueCollection[0] = sliderValue;
+                }
+                if (sliderValueCollection.Count == 0)
+                {
+                    sliderValueCollection.Add(sliderValue);
+                }
+
+
                 OnNodeModified();
             }
         }
@@ -385,6 +393,10 @@ namespace SampleLibraryUI.Examples
                 sliderGenValue = value;
                 OnPropertyChanged("MovedSliderProp");
 
+                if (sliderGenValue > sliderCusModel.MaxValue) sliderGenValue = sliderCusModel.MaxValue;
+                if (sliderGenValue < sliderCusModel.MinValue) sliderGenValue = sliderCusModel.MinValue;
+
+
                 if (sliderCusModel.sliderValueList.Count < (index+1))
                 {
                     sliderCusModel.sliderValueList.Add(sliderGenValue);
@@ -396,6 +408,7 @@ namespace SampleLibraryUI.Examples
                     sliderCusModel.sliderValueList[index] = sliderGenValue;
                     sliderCusModel.SiderValueCollection[index] = sliderGenValue;
                 }
+
 
                 sliderCusModel.OnNodeModified(true);                
             }

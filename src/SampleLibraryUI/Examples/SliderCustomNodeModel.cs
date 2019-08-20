@@ -68,7 +68,7 @@ namespace SampleLibraryUI.Examples
     public class SliderCustomNodeModel : NodeModel
     {
         #region private members
-      
+        [JsonIgnore]
         public double sliderValue = 1;
 
         [JsonIgnore]
@@ -170,8 +170,14 @@ namespace SampleLibraryUI.Examples
                 foreach (SliderINotifyModel slider in iNotSlidersModel)
                 {
                     slider.sliderAssigned.TickFrequency = stepValue;
+                    if ((slider.sliderAssigned.Value % stepValue) > (stepValue / 2)) slider.sliderAssigned.Value = Math.Ceiling(slider.sliderAssigned.Value / stepValue) * stepValue;
+                    else slider.sliderAssigned.Value = Math.Floor(slider.sliderAssigned.Value / stepValue) * stepValue;
                 }
+
                 multiSliderControl.UpdateStep(stepValue);
+                if ((SliderValue % stepValue) > (stepValue / 2)) SliderValue = Math.Ceiling(SliderValue / stepValue) * stepValue;
+                else SliderValue = Math.Floor(SliderValue / stepValue) * stepValue;
+
                 OnNodeModified();
             }
         }

@@ -393,8 +393,13 @@ namespace SampleLibraryUI.Examples
                 sliderGenValue = value;
                 OnPropertyChanged("MovedSliderProp");
 
+                if ((sliderGenValue % sliderCusModel.StepValue) > (sliderCusModel.StepValue / 2)) sliderGenValue =  Math.Ceiling(sliderGenValue / sliderCusModel.StepValue) * sliderCusModel.StepValue;
+                else sliderGenValue = Math.Floor(sliderGenValue / sliderCusModel.StepValue) * sliderCusModel.StepValue;
+
                 if (sliderGenValue > sliderCusModel.MaxValue) sliderGenValue = sliderCusModel.MaxValue;
                 if (sliderGenValue < sliderCusModel.MinValue) sliderGenValue = sliderCusModel.MinValue;
+
+
 
 
                 if (sliderCusModel.sliderValueList.Count < (index+1))

@@ -36,7 +36,7 @@
                     <StackPanel x:Name="SliderStackPanel_Copy" Orientation="Horizontal" Height="39" Margin="0,0,19,0">
                         <TextBox x:Name="textBoxDebug" Height="19" TextWrapping="Wrap" Text="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="5,0,10,0" Width="53"/>
 
-                        <Slider x:Name="sliderDebug" Margin="0,11,0,0.2" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="None" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="28" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Left" Width="122" BorderThickness="0" BorderBrush="#00000000">
+                        <Slider x:Name="sliderDebug" Margin="0,11,0,0.2" Minimum="0" Maximum="10" TickFrequency="2" TickPlacement="None" IsSnapToTickEnabled="True" Value="{Binding SliderValue, Mode=TwoWay}" Height="28" HorizontalAlignment="Left" Width="122" BorderThickness="0" BorderBrush="#00000000">
                             <Slider.Background>
                                 <ImageBrush/>
                             </Slider.Background>

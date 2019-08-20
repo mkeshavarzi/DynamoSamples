@@ -73,7 +73,7 @@ namespace SampleLibraryUI.Examples
         public List<double> sliderValueList = new List<double>();
         private int countValue = 1;
         public int newCount;
-        public static int slidersCountChange;
+        public int slidersCountChange;
         public SliderControl multiSliderControl = new SliderControl();
         public ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
         public List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
@@ -358,8 +358,8 @@ namespace SampleLibraryUI.Examples
             // and put it into the input grid.
             //                       SliderCustomNodeModel sliderModel = new SliderCustomNodeModel();
             //                       SliderControl sliderControl = sliderModel.multiSliderControl;
-            var sliderControl = new SliderControl();
-//            sliderControl = model.multiSliderControl;
+            //           var sliderControl = new SliderControl();
+            var sliderControl = model.multiSliderControl;
             nodeView.inputGrid.Children.Add(sliderControl);
 
             // Set the data context for our control to be the node model.

@@ -34,44 +34,6 @@ namespace SampleLibraryUI.Controls
             InitializeComponent(); 
         }
 
-        private void Slider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-
-        {
-
-        }
-        private void Slider_ValueCustom(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e) { }
-        private void MovedSliderProp_Changed(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-        {
-
-        }
-
-
-        public static Slider StaticSlider(Slider staticSlider, Slider instanceSlider)
-        {
-            staticSlider = instanceSlider;
-            return staticSlider;
-        }
-        public static TextBox StaticTextBox(TextBox staticTextBox, TextBox instanceTextBox)
-        {
-            staticTextBox = instanceTextBox;
-            return staticTextBox;
-        }
-        public static StackPanel StaticStackPanel(StackPanel staticStackPanel, StackPanel instanceStackPanel)
-        {
-            staticStackPanel = instanceStackPanel;
-            return staticStackPanel;
-        }
-        public static ScrollViewer StaticScroll(ScrollViewer staticScroll, ScrollViewer instanceScroll)
-        {
-            staticScroll = instanceScroll;
-            return staticScroll;
-        }
-        public static UserControl StaticUserControl(UserControl staticUserControl, UserControl instanceUserControl)
-        {
-            staticUserControl = instanceUserControl;
-            return staticUserControl;
-        }
-
         public void  AdditionalSliders(NodeModel datModel, int oldCount, int newCount, SliderControl sliderControl, SliderCustomNodeModel sliderCustomModel)
         {            
             SliderStackPanel_Copy.Visibility = Visibility.Visible;
@@ -156,7 +118,7 @@ namespace SampleLibraryUI.Controls
 
         }
 
-        public static Slider SliderDeepCopy(Slider element)
+        public Slider SliderDeepCopy(Slider element)
         {
             string shapestring = XamlWriter.Save(element);
             StringReader stringReader = new StringReader(shapestring);
@@ -166,7 +128,7 @@ namespace SampleLibraryUI.Controls
 
         }
 
-        public static TextBox TextBoxDeepCopy(TextBox element)
+        public TextBox TextBoxDeepCopy(TextBox element)
         {
             string shapestring = XamlWriter.Save(element);
             StringReader stringReader = new StringReader(shapestring);
@@ -176,7 +138,7 @@ namespace SampleLibraryUI.Controls
 
         }
 
-        public static StackPanel StackPanelDeepCopy(StackPanel element)
+        public StackPanel StackPanelDeepCopy(StackPanel element)
         {
             string shapestring = XamlWriter.Save(element);
             StringReader stringReader = new StringReader(shapestring);

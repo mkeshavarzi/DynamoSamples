@@ -43,22 +43,22 @@ namespace SampleLibraryUI.Examples
 
     // The NodeName attribute is what will display on 
     // top of the node in Dynamo
-    [NodeName("Slider Custom Node Model")]
+    [NodeName("Slider Pool")]
     // The NodeCategory attribute determines how your
     // node will be organized in the library. You can
     // specify your own category or by default the class
     // structure will be used.  You can no longer 
     // add packages or custom nodes to one of the 
     // built-in OOTB library categories.
-    [NodeCategory("SampleLibraryUI.Examples")]
+    [NodeCategory("SliderPool")]
     // The description will display in the tooltip
     // and in the help window for the node.
-    [NodeDescription("A sample UI node which displays custom UI.")]
+    [NodeDescription("Returns a list of sliders with custum count, minimum, maximum and step value")]
     // Specifying InPort and OutPort types simply
     // adds these types to the help window for the
     // node when hovering the name in the library.
     //[InPortTypes("double")]
-    [OutPortTypes("double", "double")]
+    [OutPortTypes("List<double>")]
     // Add the IsDesignScriptCompatible attribute to ensure
     // that it gets loaded in Dynamo.
     [IsDesignScriptCompatible]
@@ -276,10 +276,10 @@ namespace SampleLibraryUI.Examples
             minValue = 0;
             maxValue = 10;
 
-            if (sliderValueCollection.Count == 0)
-            {
-                sliderValueCollection.Add(sliderValue);
-            }
+
+            if (sliderValueCollection.Count == 0) sliderValueCollection.Add(sliderValue);
+            if (sliderValueList.Count == 0) sliderValueList.Add(sliderValue);
+
         }
 
         // Starting with Dynamo v2.0 you must add Json constructors for all nodeModel

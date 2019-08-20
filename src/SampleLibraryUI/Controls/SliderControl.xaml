@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             Height="122.144" Width="208.572">
+             Height="110.411" Width="208.572">
     <Grid Name="CustomUIGrid" Margin="0,0,-0.2,0">
         <StackPanel Margin="0,0,-3,0">
             <StackPanel x:Name="countStackPanel"  Orientation="Horizontal">

@@ -164,7 +164,6 @@ namespace SampleLibraryUI.Controls
         public void UpdateStep(double step)
         {
             sliderDebug.TickFrequency = step;
-
         }
     }
 

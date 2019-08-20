@@ -43,22 +43,22 @@ namespace SampleLibraryUI.Examples
 
     // The NodeName attribute is what will display on 
     // top of the node in Dynamo
-    [NodeName("Slider Custom Node Model")]
+    [NodeName("Slider Pool")]
     // The NodeCategory attribute determines how your
     // node will be organized in the library. You can
     // specify your own category or by default the class
     // structure will be used.  You can no longer 
     // add packages or custom nodes to one of the 
     // built-in OOTB library categories.
-    [NodeCategory("SampleLibraryUI.Examples")]
+    [NodeCategory("SliderPool")]
     // The description will display in the tooltip
     // and in the help window for the node.
-    [NodeDescription("A sample UI node which displays custom UI.")]
+    [NodeDescription("Returns a list of sliders with custum count, minimum, maximum and step value")]
     // Specifying InPort and OutPort types simply
     // adds these types to the help window for the
     // node when hovering the name in the library.
     //[InPortTypes("double")]
-    [OutPortTypes("double", "double")]
+    [OutPortTypes("List<double>")]
     // Add the IsDesignScriptCompatible attribute to ensure
     // that it gets loaded in Dynamo.
     [IsDesignScriptCompatible]
@@ -68,36 +68,117 @@ namespace SampleLibraryUI.Examples
     public class SliderCustomNodeModel : NodeModel
     {
         #region private members
+        [JsonIgnore]
+        public double sliderValue = 1;
 
-        public static double sliderValue = 1;
-        public static List<double> sliderValueList = new List<double>();
+        [JsonIgnore]
+        public List<double> sliderValueList = new List<double>();
+
+        [JsonIgnore]
         private int countValue = 1;
-        public static int newCount;
-        public static int slidersCountChange;
-        public  static SliderControl multiSliderControl = new SliderControl();
+
+      private double stepValue;
+        private double minValue;
+        private double maxValue;
+
+        [JsonIgnore]
+        public int newCount;
+
+        [JsonIgnore]
+        public int slidersCountChange;
+
+        [JsonIgnore]
+        public SliderControl multiSliderControl = new SliderControl();
+
+   
         public ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
-        public static List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
+
+        [JsonIgnore]
+        public List<SliderINotifyModel> iNotSlidersModel = new List<SliderINotifyModel>();
 
         #endregion
 
-
-
-
-
         #region properties
 
-
+        [JsonIgnore]
         public ObservableCollection<double> SiderValueCollection
         {
             get { return sliderValueCollection; }
             set
             {
                 sliderValueCollection = value;
+            }
+        }
 
-                foreach (var item in sliderValueCollection)
-                    //                    InitEnumItem(item);
 
-                    RaisePropertyChanged("EnumItems");
+
+
+        public double MinValue
+        {
+            get { return minValue; }
+            set
+            {
+
+                minValue = value;
+                RaisePropertyChanged("MinValue");
+                foreach (SliderINotifyModel slider in iNotSlidersModel)
+                {
+                    slider.sliderAssigned.Minimum = minValue;
+                    if (slider.sliderGenValue < minValue)
+                    {
+                        slider.sliderAssigned.Value = minValue;
+                    }
+
+                }
+                multiSliderControl.UpdateMin(minValue);
+                if (SliderValue < minValue) SliderValue = minValue;
+                OnNodeModified();
+            }
+        }
+
+
+        public double MaxValue
+        {
+            get { return maxValue; }
+            set
+            {
+
+                maxValue = value;
+                RaisePropertyChanged("MaxValue");
+                foreach (SliderINotifyModel slider in iNotSlidersModel)
+                {
+                    slider.sliderAssigned.Maximum = maxValue;
+                    if (slider.sliderGenValue > maxValue)
+                    {
+                        slider.sliderAssigned.Value = maxValue;
+                    }
+                }
+                multiSliderControl.UpdateMax(maxValue);
+                if (SliderValue > maxValue) SliderValue = maxValue;
+                OnNodeModified();
+            }
+        }
+
+        public double StepValue
+        {
+            get { return stepValue; }
+            set
+            {
+
+                stepValue = value;  
+                RaisePropertyChanged("StepValue");
+                foreach (SliderINotifyModel slider in iNotSlidersModel)
+                {
+                    slider.sliderAssigned.TickFrequency = stepValue;
+                    if ((slider.sliderAssigned.Value % stepValue) > (stepValue / 2)) slider.sliderAssigned.Value = Math.Ceiling(slider.sliderAssigned.Value / stepValue) * stepValue;
+                    else slider.sliderAssigned.Value = Math.Floor(slider.sliderAssigned.Value / stepValue) * stepValue;
+                }
+
+                multiSliderControl.UpdateStep(stepValue);
+                if ((SliderValue % stepValue) > (stepValue / 2)) SliderValue = Math.Ceiling(SliderValue / stepValue) * stepValue;
+                else SliderValue = Math.Floor(SliderValue / stepValue) * stepValue;
+
+                OnNodeModified();
             }
         }
 
@@ -107,10 +188,17 @@ namespace SampleLibraryUI.Examples
             set
             {
                 sliderValue = value;
+
+                if (sliderValue > maxValue) sliderValue = maxValue;
+                if (sliderValue < minValue) sliderValue = minValue;
+
+
                 RaisePropertyChanged("SliderValue");
 
+                if ((sliderValue % stepValue) > (stepValue / 2)) sliderValue = Math.Ceiling(sliderValue / stepValue) * stepValue;
+                else sliderValue = Math.Floor(sliderValue / stepValue) * stepValue;
 
-                if(sliderValueList.Count == 0)
+                if (sliderValueList.Count == 0)
                 {
                     sliderValueList.Add(0);
                 }
@@ -119,22 +207,16 @@ namespace SampleLibraryUI.Examples
                     sliderValueList[0] = sliderValue;
                     sliderValueCollection[0] = sliderValue;
                 }
-                if(sliderValueCollection.Count == 0)
+                if (sliderValueCollection.Count == 0)
                 {
-                    sliderValueCollection.Add(0);
+                    sliderValueCollection.Add(sliderValue);
                 }
+
+
 
                 OnNodeModified();
             }
         }
-
-        public double MinValue;
-
-        public double MaxValue;
-
-        public double StepValue;
-
-
 
 
         public int CountValue
@@ -149,28 +231,15 @@ namespace SampleLibraryUI.Examples
                 RaisePropertyChanged("CountValue");
                 if ((slidersCountChange > 0)&& (oldCount > 0))
                 {
-                    multiSliderControl.AdditionalSliders(this, oldCount, CountValue);
+                    multiSliderControl.AdditionalSliders(this, oldCount, CountValue, multiSliderControl, this);
                 }
                 if ((slidersCountChange < 0)&& (oldCount > 1))
                 {
-                    multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl);
+                    multiSliderControl.DeleteSliders(this, oldCount, CountValue, multiSliderControl, this);
                 }
-
-
                 OnNodeModified();
             }
         }
-
-
-
-        public void NodeModified()
-        {
-
-            OnNodeModified();
- //           sliderValueCollection.CollectionChanged += SliderItems_CollectionChanged;
-
-        }
-
 
         #endregion
 
@@ -205,11 +274,16 @@ namespace SampleLibraryUI.Examples
             // support argument lacing, you can set this to LacingStrategy.Disabled.
             ArgumentLacing = LacingStrategy.Disabled;
 
-            // Set initial slider value.
-            sliderValue = 10;
-
-            //set initial count value;
+            sliderValue = 1;
             countValue = 1;
+            stepValue = 1;
+            minValue = 0;
+            maxValue = 10;
+
+
+            if (sliderValueCollection.Count == 0) sliderValueCollection.Add(sliderValue);
+            if (sliderValueList.Count == 0) sliderValueList.Add(sliderValue);
+
         }
 
         // Starting with Dynamo v2.0 you must add Json constructors for all nodeModel
@@ -312,15 +386,14 @@ namespace SampleLibraryUI.Examples
    
     public class SliderINotifyModel : INotifyPropertyChanged
     {
+
         public double sliderGenValue;
-        private int newCount = SliderCustomNodeModel.newCount;
         public SliderCustomNodeModel sliderCusModel;
         public int index;
-
         public Slider sliderAssigned;
         public TextBox textBoxAssigned;
-
         public SliderINotifyModel() { }
+        public int newCount;
 
         public double MovedSliderProp
         {
@@ -328,31 +401,35 @@ namespace SampleLibraryUI.Examples
             set
             {
                 sliderGenValue = value;
-
- //              OnPropertyChanged("MovedSliderProp_" + 0.ToString());
- //               OnPropertyChanged("MovedSliderProp_" + 1.ToString());
                 OnPropertyChanged("MovedSliderProp");
 
-                if (SliderCustomNodeModel.sliderValueList.Count < (index+1))
+                if ((sliderGenValue % sliderCusModel.StepValue) > (sliderCusModel.StepValue / 2)) sliderGenValue =  Math.Ceiling(sliderGenValue / sliderCusModel.StepValue) * sliderCusModel.StepValue;
+                else sliderGenValue = Math.Floor(sliderGenValue / sliderCusModel.StepValue) * sliderCusModel.StepValue;
+
+                if (sliderGenValue > sliderCusModel.MaxValue) sliderGenValue = sliderCusModel.MaxValue;
+                if (sliderGenValue < sliderCusModel.MinValue) sliderGenValue = sliderCusModel.MinValue;
+
+
+
+
+                if (sliderCusModel.sliderValueList.Count < (index+1))
                 {
-                    SliderCustomNodeModel.sliderValueList.Add(sliderGenValue);
+                    sliderCusModel.sliderValueList.Add(sliderGenValue);
                     sliderCusModel.SiderValueCollection.Add(sliderGenValue);
                 }
 
-
-                if (SliderCustomNodeModel.sliderValueList.Count >= 2)
+                if (sliderCusModel.sliderValueList.Count >= 2)
                 {
-                    SliderCustomNodeModel.sliderValueList[index] = sliderGenValue;
+                    sliderCusModel.sliderValueList[index] = sliderGenValue;
                     sliderCusModel.SiderValueCollection[index] = sliderGenValue;
                 }
 
-                sliderCusModel.OnNodeModified(true);
-                
+
+                sliderCusModel.OnNodeModified(true);                
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyChanged(string info)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -361,6 +438,7 @@ namespace SampleLibraryUI.Examples
                 handler(this, new PropertyChangedEventArgs(info));
             }
         }
+
     }
 
 
@@ -377,7 +455,8 @@ namespace SampleLibraryUI.Examples
         /// properties on this node as the DataContext.
         /// </summary>
         /// <param name="model">The NodeModel representing the node's core logic.</param>
-        /// <param name="nodeView">The NodeView representing the node in the graph.</param>
+        /// <param name="nodeView">The NodeView representing the node in the graph.</param> 
+
         public void CustomizeView(SliderCustomNodeModel model, NodeView nodeView)
         {
             // The view variable is a reference to the node's view.
@@ -387,16 +466,16 @@ namespace SampleLibraryUI.Examples
 
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
- //                       SliderCustomNodeModel sliderModel = new SliderCustomNodeModel();
- //                       SliderControl sliderControl = sliderModel.multiSliderControl;
-
-//            var sliderControl = new SliderControl();
-            nodeView.inputGrid.Children.Add(SliderCustomNodeModel.multiSliderControl);
+            //                       SliderCustomNodeModel sliderModel = new SliderCustomNodeModel();
+            //                       SliderControl sliderControl = sliderModel.multiSliderControl;
+            //           var sliderControl = new SliderControl();
+            var sliderControl = model.multiSliderControl;
+            nodeView.inputGrid.Children.Add(sliderControl);
 
             // Set the data context for our control to be the node model.
             // Properties in this class which are data bound will raise 
             // property change notifications which will update the UI.
-            SliderCustomNodeModel.multiSliderControl.DataContext = model;
+            sliderControl.DataContext = model;
 
         }
 

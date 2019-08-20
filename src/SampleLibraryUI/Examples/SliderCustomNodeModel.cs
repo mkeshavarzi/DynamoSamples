@@ -148,8 +148,14 @@ namespace SampleLibraryUI.Examples
                 foreach (SliderINotifyModel slider in iNotSlidersModel)
                 {
                     slider.sliderAssigned.Minimum = minValue;
+                    if (slider.sliderGenValue < minValue)
+                    {
+                        slider.sliderAssigned.Value = minValue;
+                    }
+
                 }
                 multiSliderControl.UpdateMin(minValue);
+                if (SliderValue < minValue) SliderValue = minValue;
                 OnNodeModified();
             }
         }
@@ -166,8 +172,13 @@ namespace SampleLibraryUI.Examples
                 foreach (SliderINotifyModel slider in iNotSlidersModel)
                 {
                     slider.sliderAssigned.Maximum = maxValue;
+                    if (slider.sliderGenValue > maxValue)
+                    {
+                        slider.sliderAssigned.Value = maxValue;
+                    }
                 }
                 multiSliderControl.UpdateMax(maxValue);
+                if (SliderValue > maxValue) SliderValue = maxValue;
                 OnNodeModified();
             }
         }

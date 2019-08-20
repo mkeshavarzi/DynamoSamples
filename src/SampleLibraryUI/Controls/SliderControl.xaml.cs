@@ -151,16 +151,20 @@ namespace SampleLibraryUI.Controls
         public void UpdateMin (double min)
         {
             sliderDebug.Minimum = min;
+            if (sliderDebug.Value < min) sliderDebug.Value = min;
+
         }
 
         public void UpdateMax(double max)
         {
             sliderDebug.Maximum = max;
+            if (sliderDebug.Value > max) sliderDebug.Value = max;
         }
 
         public void UpdateStep(double step)
         {
             sliderDebug.TickFrequency = step;
+
         }
     }
 

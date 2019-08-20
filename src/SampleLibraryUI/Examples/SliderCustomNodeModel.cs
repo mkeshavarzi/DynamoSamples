@@ -195,6 +195,9 @@ namespace SampleLibraryUI.Examples
 
                 RaisePropertyChanged("SliderValue");
 
+                if ((sliderValue % stepValue) > (stepValue / 2)) sliderValue = Math.Ceiling(sliderValue / stepValue) * stepValue;
+                else sliderValue = Math.Floor(sliderValue / stepValue) * stepValue;
+
                 if (sliderValueList.Count == 0)
                 {
                     sliderValueList.Add(0);
@@ -208,6 +211,7 @@ namespace SampleLibraryUI.Examples
                 {
                     sliderValueCollection.Add(sliderValue);
                 }
+
 
 
                 OnNodeModified();

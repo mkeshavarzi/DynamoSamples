@@ -98,7 +98,7 @@ namespace SampleLibraryUI.Controls
             newTextBoxDeepCopy.Text = newSliderValue.ToString();
             newDeepCopy.Value = newSliderValue;
 
-            sliderCusNodeModel.INotifySliderModels.Add(newDataObject);
+            sliderCusNodeModel.iNotSlidersModel.Add(newDataObject);
 
             SliderStackPanel_AllSliders.Height += SliderStackPanel_Copy.Height;
             SliderPanel.Height += SliderStackPanel_Copy.Height;
@@ -114,7 +114,7 @@ namespace SampleLibraryUI.Controls
         {
             SliderStackPanel_AllSliders.Children.RemoveAt(index);
             sliderCusModel.sliderValueList.RemoveAt(index+1);
-            sliderCusModel.INotifySliderModels[index].sliderCusModel.SiderValueCollection.RemoveAt(index+1);
+            sliderCusModel.iNotSlidersModel[index].sliderCusModel.SiderValueCollection.RemoveAt(index+1);
 
         }
 

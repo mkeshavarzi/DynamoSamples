@@ -77,6 +77,10 @@ namespace SampleLibraryUI.Examples
         [JsonIgnore]
         private int countValue = 1;
 
+        private double stepValue = 1;
+        private double minValue = 0;
+        private double maxValue = 10;
+
         [JsonIgnore]
         public int newCount;
 
@@ -90,7 +94,7 @@ namespace SampleLibraryUI.Examples
         public ObservableCollection<double> sliderValueCollection = new ObservableCollection<double>();
 
         [JsonIgnore]
-        public List<SliderINotifyModel> INotifySliderModels = new List<SliderINotifyModel>();
+        public List<SliderINotifyModel> iNotSlidersModel = new List<SliderINotifyModel>();
 
         #endregion
 
@@ -133,14 +137,59 @@ namespace SampleLibraryUI.Examples
             }
         }
 
-        [JsonIgnore]
-        public double MinValue;
 
         [JsonIgnore]
-        public double MaxValue;
+        public double MinValue
+        {
+            get { return minValue; }
+            set
+            {
+
+                minValue = value;
+                RaisePropertyChanged("MinValue");
+                foreach (SliderINotifyModel slider in iNotSlidersModel)
+                {
+                    slider.sliderAssigned.Minimum = minValue;
+                }
+                OnNodeModified();
+            }
+        }
+
 
         [JsonIgnore]
-        public double StepValue;
+        public double MaxValue
+        {
+            get { return maxValue; }
+            set
+            {
+
+                maxValue = value;
+                RaisePropertyChanged("MaxValue");
+                foreach (SliderINotifyModel slider in iNotSlidersModel)
+                {
+                    slider.sliderAssigned.Maximum = maxValue;
+                }
+                OnNodeModified();
+            }
+        }
+
+        [JsonIgnore]
+        public double StepValue
+        {
+            get { return stepValue; }
+            set
+            {
+
+                stepValue = value;  
+                RaisePropertyChanged("StepValue");
+                foreach (SliderINotifyModel slider in iNotSlidersModel)
+                {
+                    slider.sliderAssigned.TickFrequency = stepValue;
+                }
+                OnNodeModified();
+            }
+        }
+
 
         public int CountValue
         {
@@ -199,6 +248,9 @@ namespace SampleLibraryUI.Examples
 
             sliderValue = 1;
             countValue = 1;
+            stepValue = 1;
+            minValue = 0;
+            maxValue = 10;
 
             if (sliderValueCollection.Count == 0)
             {

@@ -110,7 +110,6 @@ namespace SampleLibraryUI.Examples
             }
         }
 
-        [JsonIgnore]
         public double SliderValue
         {
             get { return sliderValue; }
@@ -138,7 +137,6 @@ namespace SampleLibraryUI.Examples
         }
 
 
-        [JsonIgnore]
         public double MinValue
         {
             get { return minValue; }
@@ -151,12 +149,12 @@ namespace SampleLibraryUI.Examples
                 {
                     slider.sliderAssigned.Minimum = minValue;
                 }
+                multiSliderControl.UpdateMin(minValue);
                 OnNodeModified();
             }
         }
 
 
-        [JsonIgnore]
         public double MaxValue
         {
             get { return maxValue; }
@@ -169,11 +167,11 @@ namespace SampleLibraryUI.Examples
                 {
                     slider.sliderAssigned.Maximum = maxValue;
                 }
+                multiSliderControl.UpdateMax(maxValue);
                 OnNodeModified();
             }
         }
 
-        [JsonIgnore]
         public double StepValue
         {
             get { return stepValue; }
@@ -186,6 +184,7 @@ namespace SampleLibraryUI.Examples
                 {
                     slider.sliderAssigned.TickFrequency = stepValue;
                 }
+                multiSliderControl.UpdateStep(stepValue);
                 OnNodeModified();
             }
         }

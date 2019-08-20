@@ -147,6 +147,21 @@ namespace SampleLibraryUI.Controls
             return DeepCopyobject;
 
         }
+
+        public void UpdateMin (double min)
+        {
+            sliderDebug.Minimum = min;
+        }
+
+        public void UpdateMax(double max)
+        {
+            sliderDebug.Maximum = max;
+        }
+
+        public void UpdateStep(double step)
+        {
+            sliderDebug.TickFrequency = step;
+        }
     }
 
 
